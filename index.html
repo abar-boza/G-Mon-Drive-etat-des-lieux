@@ -257,8 +257,19 @@
       <button class="danger" onclick="resetApp()">Réinitialiser</button>
     </div>
   </header>
+<div class="app-layout">
 
-  <div class="container">
+  <aside class="sidebar">
+    <h3>États des lieux</h3>
+
+    <button class="secondary" onclick="newDocument()">Nouveau</button>
+    <button class="secondary" onclick="saveCurrentDocument()">Enregistrer</button>
+
+    <div id="savedFolders" style="margin-top:10px;"></div>
+  </aside>
+
+  <main class="main-content">
+    <div class="container">
     <div class="card">
       <h2 class="section-title">Informations générales</h2>
 
@@ -920,3 +931,6 @@
   </script>
 </body>
 </html>
+        </div>
+  </main>
+</div>
