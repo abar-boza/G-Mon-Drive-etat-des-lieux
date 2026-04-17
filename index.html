@@ -8,18 +8,17 @@
   <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
   <style>
     :root {
-      --bg: #fcf8fd;
+      --bg: #fff8fc;
       --card: #ffffff;
-      --line: #eadcf1;
-      --text: #2c1338;
-      --muted: #7b647f;
-      --violet: #7c3aed;
-      --violet-dark: #5b21b6;
-      --rose: #ec4899;
-      --rose-light: #fde7f3;
+      --line: #edd7ea;
+      --text: #3a1f3f;
+      --muted: #7f6b82;
+      --violet: #8a4af3;
+      --violet-dark: #6930c3;
+      --rose: #ea5aa9;
+      --rose-light: #fdebf5;
       --danger: #b42318;
-      --ok: #067647;
-      --tab-bg: #f8ecfb;
+      --tab-bg: #f8ebf7;
     }
 
     * { box-sizing: border-box; }
@@ -28,22 +27,22 @@
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
       font-size: 10pt;
-      background: linear-gradient(180deg, #fff8fd 0%, #f9f4ff 100%);
+      background: linear-gradient(180deg, #fff9fc 0%, #faf3ff 100%);
       color: var(--text);
     }
 
     header {
-      padding: 14px;
-      background: linear-gradient(135deg, var(--violet-dark), var(--rose));
-      color: white;
       position: sticky;
       top: 0;
-      z-index: 10;
-      box-shadow: 0 4px 16px rgba(91, 33, 182, 0.22);
+      z-index: 20;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--violet-dark), var(--rose));
+      color: white;
+      box-shadow: 0 4px 14px rgba(105, 48, 195, 0.18);
     }
 
     header h1 {
-      margin: 0 0 10px;
+      margin: 0 0 8px;
       font-size: 15pt;
       line-height: 1.2;
     }
@@ -51,7 +50,7 @@
     .toolbar {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
     }
 
     .container {
@@ -63,10 +62,10 @@
     .card {
       background: var(--card);
       border: 1px solid var(--line);
-      border-radius: 16px;
+      border-radius: 14px;
       padding: 12px;
       margin-bottom: 12px;
-      box-shadow: 0 5px 16px rgba(124, 58, 237, 0.05);
+      box-shadow: 0 4px 14px rgba(138, 74, 243, 0.04);
     }
 
     .grid {
@@ -85,8 +84,8 @@
     label {
       display: block;
       font-weight: 700;
-      margin-bottom: 5px;
       color: var(--violet-dark);
+      margin-bottom: 4px;
     }
 
     input, select, textarea, button {
@@ -94,52 +93,50 @@
       font-size: 10pt;
     }
 
-    input[type="text"], input[type="date"], input[type="number"], textarea, select {
+    input[type="text"],
+    input[type="date"],
+    textarea,
+    select {
       width: 100%;
-      padding: 10px 11px;
-      border-radius: 11px;
+      padding: 8px 10px;
       border: 1px solid var(--line);
+      border-radius: 10px;
       background: white;
       color: var(--text);
     }
 
     textarea {
-      min-height: 78px;
+      min-height: 74px;
       resize: vertical;
     }
 
     button {
       border: 0;
-      border-radius: 12px;
-      padding: 10px 13px;
+      border-radius: 10px;
+      padding: 7px 10px;
       cursor: pointer;
       background: linear-gradient(135deg, var(--violet), var(--rose));
       color: white;
       font-weight: 700;
-      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.18);
+      line-height: 1.2;
     }
 
     button.secondary {
-      background: #f5eafb;
+      background: #f8eef9;
       color: var(--violet-dark);
-      box-shadow: none;
       border: 1px solid var(--line);
+      box-shadow: none;
     }
 
     button.danger {
-      background: #ffe5e5;
-      color: #9b1c1c;
+      background: #ffe9ec;
+      color: #a61b2b;
+      border: 1px solid #f4cbd2;
       box-shadow: none;
-      border: 1px solid #f4c7c7;
     }
 
     button.ok {
       background: linear-gradient(135deg, var(--violet-dark), var(--violet));
-    }
-
-    .small {
-      font-size: 9pt;
-      color: var(--muted);
     }
 
     .section-title {
@@ -148,43 +145,47 @@
       color: var(--violet-dark);
     }
 
+    .small {
+      font-size: 9pt;
+      color: var(--muted);
+    }
+
     .room-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
+      gap: 8px;
       flex-wrap: wrap;
+      margin-bottom: 8px;
     }
 
     .tabbar {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       margin-top: 8px;
-      flex-wrap: wrap;
+      margin-bottom: 10px;
     }
 
     .tab-btn {
       flex: 1;
-      min-width: 120px;
+      min-width: 100px;
       background: var(--tab-bg);
       color: var(--violet-dark);
       border: 1px solid var(--line);
-      box-shadow: none;
     }
 
     .tab-btn.active {
       background: linear-gradient(135deg, var(--violet), var(--rose));
       color: white;
-      border: none;
+      border: 0;
     }
 
     .element-card {
       border: 1px solid var(--line);
-      border-radius: 14px;
+      border-radius: 12px;
       padding: 10px;
-      background: #fff;
       margin-bottom: 10px;
+      background: #fff;
     }
 
     .photo-preview {
@@ -195,70 +196,50 @@
     }
 
     .photo-preview img {
-      width: 72px;
-      height: 72px;
+      width: 68px;
+      height: 68px;
       object-fit: cover;
-      border-radius: 10px;
+      border-radius: 8px;
       border: 1px solid var(--line);
     }
 
     .signature-box {
       border: 1px dashed var(--line);
-      border-radius: 14px;
+      border-radius: 12px;
       padding: 10px;
       background: white;
     }
 
     canvas {
       width: 100%;
-      height: 180px;
+      height: 170px;
       background: white;
       border: 1px solid var(--line);
       border-radius: 10px;
       touch-action: none;
     }
 
-    details {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 10px 12px;
-      background: #fffafc;
-    }
-
-    details summary {
-      cursor: pointer;
+    .mention {
+      margin-top: 6px;
       font-weight: 700;
       color: var(--violet-dark);
-    }
-
-    .pill {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: var(--rose-light);
-      color: var(--violet-dark);
-      font-size: 9pt;
-      margin-right: 6px;
-      margin-bottom: 6px;
     }
 
     .footer-note {
       text-align: center;
       color: var(--muted);
-      padding: 12px 0 22px;
       font-size: 9pt;
+      padding: 8px 0 20px;
     }
 
     .inline-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
     }
 
-    .mention {
-      margin-top: 6px;
-      font-weight: 700;
-      color: var(--violet-dark);
+    .mini-top-space {
+      margin-top: 8px;
     }
   </style>
 </head>
@@ -268,7 +249,7 @@
     <div class="toolbar">
       <button onclick="saveLocal()">Enregistrer</button>
       <button class="secondary" onclick="exportJson()">Exporter JSON</button>
-      <label class="secondary" style="display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:#f5eafb;color:#5b21b6;font-weight:700;cursor:pointer;border:1px solid var(--line);">
+      <label class="secondary" style="display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;cursor:pointer;">
         Importer JSON
         <input type="file" accept="application/json" onchange="importJson(event)" style="display:none;">
       </label>
@@ -280,6 +261,7 @@
   <div class="container">
     <div class="card">
       <h2 class="section-title">Informations générales</h2>
+
       <div class="grid grid-3">
         <div>
           <label>Référence dossier</label>
@@ -294,12 +276,12 @@
           <select id="typeEdl">
             <option>Entrée</option>
             <option>Sortie</option>
-            <option>Comparatif entrée / sortie</option>
+            <option selected>Comparatif entrée / sortie</option>
           </select>
         </div>
       </div>
 
-      <div class="grid grid-2" style="margin-top:10px;">
+      <div class="grid grid-2 mini-top-space">
         <div>
           <label>Bien / Adresse</label>
           <textarea id="adresse" placeholder="Adresse complète du bien"></textarea>
@@ -310,7 +292,7 @@
         </div>
       </div>
 
-      <div class="grid grid-3" style="margin-top:10px;">
+      <div class="grid grid-3 mini-top-space">
         <div>
           <label>Propriétaire</label>
           <input type="text" id="proprietaire">
@@ -325,7 +307,7 @@
         </div>
       </div>
 
-      <div class="grid grid-4" style="margin-top:10px;">
+      <div class="grid grid-4 mini-top-space">
         <div>
           <label>Relevé eau</label>
           <input type="text" id="releveEau">
@@ -344,7 +326,7 @@
         </div>
       </div>
 
-      <div style="margin-top:10px;">
+      <div class="mini-top-space">
         <label>Moyens / dispositifs en place</label>
         <textarea id="dispositifs" placeholder="Ex. Alarme incendie, détecteur de fumée, fibre internet, interphone, badge, télécommande portail, visiophone..."></textarea>
       </div>
@@ -354,28 +336,12 @@
       <div class="room-header">
         <div>
           <h2 class="section-title" style="margin-bottom:2px;">Pièces</h2>
-          <div class="small">Affichage pensé pour téléphone avec onglets Entrée / Sortie.</div>
+          <div class="small">Affichage mobile avec onglets Entrée / Sortie.</div>
         </div>
         <div>
           <button onclick="addRoom()">Ajouter une pièce</button>
         </div>
       </div>
-
-      <details style="margin-bottom:12px;">
-        <summary>Modèles rapides de pièces</summary>
-        <div style="margin-top:10px;">
-          <span class="pill">Entrée</span>
-          <span class="pill">Séjour</span>
-          <span class="pill">Cuisine</span>
-          <span class="pill">Chambre</span>
-          <span class="pill">Salle de bain</span>
-          <span class="pill">WC</span>
-          <span class="pill">Couloir</span>
-          <span class="pill">Balcon</span>
-          <span class="pill">Cave</span>
-          <span class="pill">Garage</span>
-        </div>
-      </details>
 
       <div id="rooms"></div>
     </div>
@@ -387,15 +353,16 @@
           <label>Signature bailleur / représentant</label>
           <canvas id="signatureLandlord"></canvas>
           <div class="mention">Lu et approuvé</div>
-          <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+          <div class="mini-top-space">
             <button class="secondary" onclick="clearSignature('landlord')">Effacer</button>
           </div>
         </div>
+
         <div class="signature-box">
           <label>Signature locataire</label>
           <canvas id="signatureTenant"></canvas>
           <div class="mention">Lu et approuvé</div>
-          <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+          <div class="mini-top-space">
             <button class="secondary" onclick="clearSignature('tenant')">Effacer</button>
           </div>
         </div>
@@ -403,7 +370,7 @@
     </div>
 
     <div class="footer-note">
-      Version mobile. Sauvegarde locale + export JSON + PDF.
+      Sauvegarde locale + export JSON + PDF
     </div>
   </div>
 
@@ -417,13 +384,15 @@
 
     const statusOptions = ['Neuf', 'Très bon', 'Bon', 'Usage', 'Moyen', 'Mauvais', 'À remplacer', 'Absent'];
 
+    const defaultRoomNames = ['Entrée', 'Séjour', 'Cuisine', 'Chambre', 'Salle de bain', 'WC'];
+
     const state = {
       rooms: [],
       currentTab: 'entry'
     };
 
-    let landlordPad;
-    let tenantPad;
+    let landlordPad = null;
+    let tenantPad = null;
 
     function defaultElementsForRoomType(name) {
       const v = (name || '').toLowerCase();
@@ -441,9 +410,22 @@
       };
     }
 
+    function createRoom(name) {
+      return {
+        id: crypto.randomUUID(),
+        name,
+        elements: defaultElementsForRoomType(name).map(createElement)
+      };
+    }
+
+    function setDefaultRooms() {
+      state.rooms = defaultRoomNames.map(createRoom);
+      renderRooms();
+      saveLocal();
+    }
+
     function addRoom(name = 'Nouvelle pièce') {
-      const elements = defaultElementsForRoomType(name).map(createElement);
-      state.rooms.push({ id: crypto.randomUUID(), name, elements });
+      state.rooms.push(createRoom(name));
       renderRooms();
       saveLocal();
     }
@@ -456,6 +438,7 @@
 
     function addElement(roomId) {
       const room = state.rooms.find(r => r.id === roomId);
+      if (!room) return;
       room.elements.push(createElement('Nouvel élément'));
       renderRooms();
       saveLocal();
@@ -463,6 +446,7 @@
 
     function removeElement(roomId, elementIndex) {
       const room = state.rooms.find(r => r.id === roomId);
+      if (!room) return;
       room.elements.splice(elementIndex, 1);
       renderRooms();
       saveLocal();
@@ -470,19 +454,22 @@
 
     function updateRoomName(roomId, value) {
       const room = state.rooms.find(r => r.id === roomId);
+      if (!room) return;
       room.name = value;
-      saveLocal();
-    }
-
-    function updateElementField(roomId, elementIndex, side, field, value) {
-      const room = state.rooms.find(r => r.id === roomId);
-      room.elements[elementIndex][side][field] = value;
       saveLocal();
     }
 
     function updateElementName(roomId, elementIndex, value) {
       const room = state.rooms.find(r => r.id === roomId);
+      if (!room || !room.elements[elementIndex]) return;
       room.elements[elementIndex].name = value;
+      saveLocal();
+    }
+
+    function updateElementField(roomId, elementIndex, side, field, value) {
+      const room = state.rooms.find(r => r.id === roomId);
+      if (!room || !room.elements[elementIndex]) return;
+      room.elements[elementIndex][side][field] = value;
       saveLocal();
     }
 
@@ -492,40 +479,20 @@
       saveLocal();
     }
 
-    function toBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
-    async function handlePhotos(event, roomId, elementIndex, side) {
-      const files = Array.from(event.target.files || []);
-      if (!files.length) return;
-      const room = state.rooms.find(r => r.id === roomId);
-      const element = room.elements[elementIndex][side];
-      for (const file of files) {
-        const b64 = await toBase64(file);
-        element.photos.push(b64);
-      }
-      renderRooms();
-      saveLocal();
-    }
-
-    function removePhoto(roomId, elementIndex, side, photoIndex) {
-      const room = state.rooms.find(r => r.id === roomId);
-      room.elements[elementIndex][side].photos.splice(photoIndex, 1);
-      renderRooms();
-      saveLocal();
+    function escapeHtml(str) {
+      return String(str || '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
     }
 
     function roomTemplate(room) {
       return `
         <div class="card">
           <div class="room-header">
-            <div style="flex:1;min-width:220px;">
+            <div style="flex:1;min-width:200px;">
               <input type="text" value="${escapeHtml(room.name)}" oninput="updateRoomName('${room.id}', this.value)" style="font-size:11pt;font-weight:700;">
             </div>
             <div class="inline-actions">
@@ -538,11 +505,11 @@
             <button class="tab-btn ${state.currentTab === 'exit' ? 'active' : ''}" onclick="switchTab('exit')">Sortie</button>
           </div>
 
-          <div style="margin-top:10px;">
+          <div>
             ${room.elements.map((element, index) => elementCardTemplate(room.id, element, index)).join('')}
           </div>
 
-          <div style="margin-top:8px;">
+          <div class="mini-top-space">
             <button class="secondary" onclick="addElement('${room.id}')">Ajouter un élément</button>
           </div>
         </div>
@@ -560,13 +527,17 @@
     function photosHtml(roomId, elementIndex, side, photos) {
       return `
         <div>
-          <label style="margin-top:8px;">Photos</label>
+          <label>Photos</label>
           <input type="file" accept="image/*" capture="environment" multiple onchange="handlePhotos(event, '${roomId}', ${elementIndex}, '${side}')">
           <div class="photo-preview">
             ${photos.map((src, i) => `
               <div style="position:relative;">
                 <img src="${src}" alt="photo">
-                <button type="button" onclick="removePhoto('${roomId}', ${elementIndex}, '${side}', ${i})" style="position:absolute;top:-6px;right:-6px;padding:2px 6px;border-radius:999px;background:#ec4899;color:#fff;border:0;">x</button>
+                <button
+                  type="button"
+                  onclick="removePhoto('${roomId}', ${elementIndex}, '${side}', ${i})"
+                  style="position:absolute;top:-5px;right:-5px;padding:1px 5px;border-radius:999px;background:#ea5aa9;color:#fff;border:0;"
+                >x</button>
               </div>
             `).join('')}
           </div>
@@ -577,6 +548,7 @@
     function elementCardTemplate(roomId, element, index) {
       const side = state.currentTab;
       const current = element[side];
+
       return `
         <div class="element-card">
           <div class="grid grid-2">
@@ -590,16 +562,16 @@
             </div>
           </div>
 
-          <div style="margin-top:8px;">
+          <div class="mini-top-space">
             <label>Commentaire ${side === 'entry' ? 'entrée' : 'sortie'}</label>
             <textarea oninput="updateElementField('${roomId}', ${index}, '${side}', 'comment', this.value)">${escapeHtml(current.comment)}</textarea>
           </div>
 
-          <div style="margin-top:8px;">
+          <div class="mini-top-space">
             ${photosHtml(roomId, index, side, current.photos)}
           </div>
 
-          <div style="margin-top:8px;">
+          <div class="mini-top-space">
             <button class="danger" onclick="removeElement('${roomId}', ${index})">Supprimer l’élément</button>
           </div>
         </div>
@@ -607,21 +579,41 @@
     }
 
     function renderRooms() {
-      document.getElementById('rooms').innerHTML = state.rooms.map(roomTemplate).join('');
+      const container = document.getElementById('rooms');
+      if (!container) return;
+      container.innerHTML = state.rooms.map(roomTemplate).join('');
     }
 
-    function escapeHtml(str) {
-      return (str || '')
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;');
+    function toBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
     }
 
-    function saveLocal() {
-      const payload = collectFormData();
-      localStorage.setItem('edl-app-data', JSON.stringify(payload));
+    async function handlePhotos(event, roomId, elementIndex, side) {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+      const room = state.rooms.find(r => r.id === roomId);
+      if (!room || !room.elements[elementIndex]) return;
+
+      for (const file of files) {
+        const data = await toBase64(file);
+        room.elements[elementIndex][side].photos.push(data);
+      }
+
+      renderRooms();
+      saveLocal();
+    }
+
+    function removePhoto(roomId, elementIndex, side, photoIndex) {
+      const room = state.rooms.find(r => r.id === roomId);
+      if (!room || !room.elements[elementIndex]) return;
+      room.elements[elementIndex][side].photos.splice(photoIndex, 1);
+      renderRooms();
+      saveLocal();
     }
 
     function collectFormData() {
@@ -648,16 +640,8 @@
       };
     }
 
-    function loadLocal() {
-      const raw = localStorage.getItem('edl-app-data');
-      if (!raw) {
-        addRoom('Entrée');
-        addRoom('Séjour');
-        addRoom('Cuisine');
-        return;
-      }
-      const data = JSON.parse(raw);
-      hydrateFormData(data);
+    function saveLocal() {
+      localStorage.setItem('edl-app-data', JSON.stringify(collectFormData()));
     }
 
     function hydrateFormData(data) {
@@ -677,10 +661,31 @@
       state.rooms = Array.isArray(data.rooms) ? data.rooms : [];
       state.currentTab = data.currentTab || 'entry';
       renderRooms();
+
       setTimeout(() => {
-        if (data.signatures?.landlord) landlordPad.fromDataURL(data.signatures.landlord);
-        if (data.signatures?.tenant) tenantPad.fromDataURL(data.signatures.tenant);
-      }, 100);
+        if (data.signatures && data.signatures.landlord && landlordPad) landlordPad.fromDataURL(data.signatures.landlord);
+        if (data.signatures && data.signatures.tenant && tenantPad) tenantPad.fromDataURL(data.signatures.tenant);
+      }, 60);
+    }
+
+    function loadLocal() {
+      const raw = localStorage.getItem('edl-app-data');
+
+      if (!raw) {
+        setDefaultRooms();
+        return;
+      }
+
+      try {
+        const data = JSON.parse(raw);
+        if (!data || !Array.isArray(data.rooms) || data.rooms.length === 0) {
+          setDefaultRooms();
+          return;
+        }
+        hydrateFormData(data);
+      } catch (e) {
+        setDefaultRooms();
+      }
     }
 
     function exportJson() {
@@ -695,8 +700,9 @@
     }
 
     function importJson(event) {
-      const file = event.target.files?.[0];
+      const file = event.target.files && event.target.files[0];
       if (!file) return;
+
       const reader = new FileReader();
       reader.onload = () => {
         try {
@@ -711,8 +717,8 @@
     }
 
     function clearSignature(side) {
-      if (side === 'landlord') landlordPad.clear();
-      if (side === 'tenant') tenantPad.clear();
+      if (side === 'landlord' && landlordPad) landlordPad.clear();
+      if (side === 'tenant' && tenantPad) tenantPad.clear();
       saveLocal();
     }
 
@@ -722,79 +728,130 @@
       location.reload();
     }
 
+    function setupSignaturePad() {
+      const landlordCanvas = document.getElementById('signatureLandlord');
+      const tenantCanvas = document.getElementById('signatureTenant');
+
+      function resizeCanvas(canvas) {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * ratio;
+        canvas.height = rect.height * ratio;
+        const ctx = canvas.getContext('2d');
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(ratio, ratio);
+      }
+
+      resizeCanvas(landlordCanvas);
+      resizeCanvas(tenantCanvas);
+
+      landlordPad = new SignaturePad(landlordCanvas);
+      tenantPad = new SignaturePad(tenantCanvas);
+
+      landlordCanvas.addEventListener('mouseup', saveLocal);
+      tenantCanvas.addEventListener('mouseup', saveLocal);
+      landlordCanvas.addEventListener('touchend', saveLocal);
+      tenantCanvas.addEventListener('touchend', saveLocal);
+
+      window.addEventListener('resize', () => {
+        const landlordData = landlordPad && !landlordPad.isEmpty() ? landlordPad.toDataURL() : null;
+        const tenantData = tenantPad && !tenantPad.isEmpty() ? tenantPad.toDataURL() : null;
+
+        resizeCanvas(landlordCanvas);
+        resizeCanvas(tenantCanvas);
+
+        landlordPad = new SignaturePad(landlordCanvas);
+        tenantPad = new SignaturePad(tenantCanvas);
+
+        if (landlordData) landlordPad.fromDataURL(landlordData);
+        if (tenantData) tenantPad.fromDataURL(tenantData);
+      });
+    }
+
     async function generatePdf() {
       const payload = collectFormData();
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+
       const pageWidth = doc.internal.pageSize.getWidth();
       const pageHeight = doc.internal.pageSize.getHeight();
       const left = 12;
       let y = 12;
 
-      function addPageNumber() {
-        const pageCount = doc.getNumberOfPages();
-        for (let i = 1; i <= pageCount; i++) {
+      function addPageNumbers() {
+        const count = doc.getNumberOfPages();
+        for (let i = 1; i <= count; i++) {
           doc.setPage(i);
           doc.setFont('helvetica', 'normal');
           doc.setFontSize(9);
-          doc.text(`Page ${i} / ${pageCount}`, pageWidth - 28, pageHeight - 8);
+          doc.text(`Page ${i} / ${count}`, pageWidth - 28, pageHeight - 8);
         }
       }
 
-      function line(txt, size = 10, bold = false) {
+      function line(text, size = 10, bold = false) {
         doc.setFont('helvetica', bold ? 'bold' : 'normal');
         doc.setFontSize(size);
-        const lines = doc.splitTextToSize(String(txt || ''), 185);
+        const lines = doc.splitTextToSize(String(text || ''), 185);
+
         if (y + lines.length * 5 > 275) {
           doc.addPage();
           y = 12;
         }
+
         doc.text(lines, left, y);
         y += lines.length * 5 + 1;
       }
 
       function block(title, content) {
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(10);
-        if (y > 265) {
+        if (y > 260) {
           doc.addPage();
           y = 12;
         }
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
         doc.text(title, left, y);
         y += 5;
+
         doc.setFont('helvetica', 'normal');
         const lines = doc.splitTextToSize(String(content || ''), 183);
         const height = Math.max(8, lines.length * 5 + 4);
+
         if (y + height > 275) {
           doc.addPage();
           y = 12;
         }
+
         doc.rect(left, y - 4, 185, height);
         doc.text(lines, left + 2, y);
         y += height + 4;
       }
 
       function twoCols(title, leftTxt, rightTxt) {
-        if (y > 250) {
+        if (y > 248) {
           doc.addPage();
           y = 12;
         }
+
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(10);
         doc.text(title, left, y);
         y += 5;
+
         doc.setFont('helvetica', 'normal');
-        const l = doc.splitTextToSize(leftTxt || '', 86);
-        const r = doc.splitTextToSize(rightTxt || '', 86);
-        const h = Math.max(l.length, r.length) * 5 + 4;
+        const leftLines = doc.splitTextToSize(leftTxt || '', 86);
+        const rightLines = doc.splitTextToSize(rightTxt || '', 86);
+        const h = Math.max(leftLines.length, rightLines.length) * 5 + 4;
+
         if (y + h > 275) {
           doc.addPage();
           y = 12;
         }
+
         doc.rect(left, y - 4, 88, h);
         doc.rect(109, y - 4, 88, h);
-        doc.text(l, left + 2, y);
-        doc.text(r, 111, y);
+        doc.text(leftLines, left + 2, y);
+        doc.text(rightLines, 111, y);
         y += h + 4;
       }
 
@@ -806,9 +863,9 @@
       line('Locataire : ' + (payload.locataire || ''));
       line('Agent / Représentant : ' + (payload.agent || ''));
       line('Observations générales : ' + (payload.observations || ''));
-      y += 2;
 
-      block('Relevés et informations',
+      block(
+        'Relevés et informations',
         'Relevé eau : ' + (payload.releveEau || '') + '\n' +
         'Relevé électricité : ' + (payload.releveElectricite || '') + '\n' +
         'Relevé gaz : ' + (payload.releveGaz || '') + '\n' +
@@ -816,18 +873,20 @@
         'Moyens / dispositifs en place : ' + (payload.dispositifs || '')
       );
 
-      payload.rooms.forEach((room) => {
+      for (const room of payload.rooms) {
         doc.addPage();
         y = 12;
-        line('Pièce : ' + room.name, 13, true);
-        room.elements.forEach((element) => {
+        line('Pièce : ' + (room.name || ''), 13, true);
+
+        const elements = Array.isArray(room.elements) ? room.elements : [];
+        for (const element of elements) {
           twoCols(
-            'Élément : ' + element.name,
-            'ENTRÉE\nÉtat : ' + element.entry.status + '\nCommentaire : ' + (element.entry.comment || ''),
-            'SORTIE\nÉtat : ' + element.exit.status + '\nCommentaire : ' + (element.exit.comment || '')
+            'Élément : ' + (element.name || ''),
+            'ENTRÉE\nÉtat : ' + (element.entry?.status || '') + '\nCommentaire : ' + (element.entry?.comment || ''),
+            'SORTIE\nÉtat : ' + (element.exit?.status || '') + '\nCommentaire : ' + (element.exit?.comment || '')
           );
-        });
-      });
+        }
+      }
 
       doc.addPage();
       y = 12;
@@ -849,50 +908,13 @@
         line('Lu et approuvé');
       }
 
-      addPageNumber();
+      addPageNumbers();
       doc.save((payload.reference || 'etat-des-lieux') + '.pdf');
-    }
-
-    function setupSignaturePad() {
-      const landlordCanvas = document.getElementById('signatureLandlord');
-      const tenantCanvas = document.getElementById('signatureTenant');
-
-      function resizeCanvas(canvas) {
-        const ratio = Math.max(window.devicePixelRatio || 1, 1);
-        const rect = canvas.getBoundingClientRect();
-        canvas.width = rect.width * ratio;
-        canvas.height = rect.height * ratio;
-        const ctx = canvas.getContext('2d');
-        ctx.scale(ratio, ratio);
-      }
-
-      resizeCanvas(landlordCanvas);
-      resizeCanvas(tenantCanvas);
-
-      landlordPad = new SignaturePad(landlordCanvas);
-      tenantPad = new SignaturePad(tenantCanvas);
-
-      landlordCanvas.addEventListener('mouseup', saveLocal);
-      tenantCanvas.addEventListener('mouseup', saveLocal);
-      landlordCanvas.addEventListener('touchend', saveLocal);
-      tenantCanvas.addEventListener('touchend', saveLocal);
-
-      window.addEventListener('resize', () => {
-        const landlordData = !landlordPad.isEmpty() ? landlordPad.toDataURL() : null;
-        const tenantData = !tenantPad.isEmpty() ? tenantPad.toDataURL() : null;
-        resizeCanvas(landlordCanvas);
-        resizeCanvas(tenantCanvas);
-        landlordPad = new SignaturePad(landlordCanvas);
-        tenantPad = new SignaturePad(tenantCanvas);
-        if (landlordData) landlordPad.fromDataURL(landlordData);
-        if (tenantData) tenantPad.fromDataURL(tenantData);
-      });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       setupSignaturePad();
       document.getElementById('dateEdl').valueAsDate = new Date();
-      document.getElementById('typeEdl').value = 'Comparatif entrée / sortie';
       loadLocal();
     });
   </script>
