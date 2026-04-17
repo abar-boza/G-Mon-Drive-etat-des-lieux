@@ -33,9 +33,10 @@
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
-      font-size: 10pt;
+      font-size: 9pt;
       background: linear-gradient(180deg, #fff9fc 0%, #faf3ff 100%);
       color: var(--text);
+      padding-bottom: 72px;
     }
 
     header {
@@ -50,7 +51,7 @@
 
     header h1 {
       margin: 0 0 8px;
-      font-size: 15pt;
+      font-size: 14pt;
       line-height: 1.2;
     }
 
@@ -61,15 +62,15 @@
     }
 
     .top-switchers button {
-      padding: 6px 9px;
-      font-size: 9pt;
+      padding: 5px 8px;
+      font-size: 8.5pt;
     }
 
     .app-layout {
       display: grid;
-      grid-template-columns: 230px 1fr;
+      grid-template-columns: 210px 1fr;
       gap: 12px;
-      max-width: 1500px;
+      max-width: 1550px;
       margin: 0 auto;
       padding: 12px;
     }
@@ -78,17 +79,17 @@
       background: var(--rose-pastel);
       border: 1px solid #efb8ca;
       border-radius: 14px;
-      padding: 10px;
+      padding: 8px;
       box-shadow: 0 4px 14px rgba(138, 74, 243, 0.04);
       height: fit-content;
       position: sticky;
       top: 82px;
-      font-size: 9pt;
+      font-size: 8.5pt;
     }
 
     .sidebar h3 {
       margin: 0 0 8px;
-      font-size: 10pt;
+      font-size: 9.5pt;
       color: var(--violet-dark);
     }
 
@@ -97,7 +98,7 @@
     }
 
     .container {
-      max-width: 1100px;
+      max-width: 1180px;
       padding: 0;
     }
 
@@ -105,14 +106,14 @@
       background: var(--card);
       border: 1px solid #f0ddea;
       border-radius: 14px;
-      padding: 12px;
+      padding: 10px;
       margin-bottom: 12px;
       box-shadow: 0 4px 14px rgba(138, 74, 243, 0.04);
     }
 
     .grid {
       display: grid;
-      gap: 10px;
+      gap: 8px;
     }
 
     .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -140,47 +141,48 @@
       font-weight: 700;
       color: var(--violet-dark);
       margin-bottom: 4px;
-      font-size: 9pt;
+      font-size: 8.5pt;
     }
 
     input, select, textarea, button {
       font-family: Arial, Helvetica, sans-serif;
-      font-size: 10pt;
+      font-size: 9pt;
     }
 
     input[type="text"],
     input[type="date"],
+    input[type="number"],
     textarea,
     select {
       width: 100%;
-      padding: 7px 9px;
+      padding: 6px 8px;
       border: 1px solid #ead7e4;
-      border-radius: 10px;
+      border-radius: 9px;
       background: white;
       color: var(--text);
     }
 
     textarea {
-      min-height: 68px;
+      min-height: 58px;
       resize: vertical;
     }
 
     input[type="file"] {
       width: 100%;
-      padding: 4px 0;
-      font-size: 9pt;
+      padding: 3px 0;
+      font-size: 8.5pt;
     }
 
     button {
       border: 0;
-      border-radius: 10px;
-      padding: 6px 9px;
+      border-radius: 9px;
+      padding: 5px 8px;
       cursor: pointer;
       background: linear-gradient(135deg, var(--violet), var(--rose));
       color: white;
       font-weight: 700;
-      line-height: 1.15;
-      font-size: 9pt;
+      line-height: 1.1;
+      font-size: 8.5pt;
     }
 
     button.secondary {
@@ -210,12 +212,12 @@
 
     .section-title {
       margin: 0 0 8px;
-      font-size: 11pt;
+      font-size: 10.5pt;
       color: var(--violet-dark);
     }
 
     .small {
-      font-size: 8.5pt;
+      font-size: 8pt;
       color: var(--muted);
     }
 
@@ -237,7 +239,7 @@
 
     .tab-btn {
       flex: 1;
-      min-width: 90px;
+      min-width: 80px;
       background: var(--tab-bg);
       color: var(--violet-dark);
       border: 1px solid #ecd7ea;
@@ -252,16 +254,16 @@
     .element-card {
       border: 1px solid #f0ddea;
       border-radius: 10px;
-      padding: 8px;
+      padding: 7px;
       margin-bottom: 8px;
       background: #fff;
     }
 
     .element-line {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr 2fr auto;
+      grid-template-columns: 1.1fr 0.7fr 2fr auto;
       gap: 6px;
-      align-items: center;
+      align-items: end;
     }
 
     @media (max-width: 900px) {
@@ -283,8 +285,8 @@
     }
 
     .photo-preview img {
-      width: 68px;
-      height: 68px;
+      width: 64px;
+      height: 64px;
       object-fit: cover;
       border-radius: 8px;
       border: 1px solid #ead7e4;
@@ -299,7 +301,7 @@
 
     canvas {
       width: 100%;
-      height: 160px;
+      height: 140px;
       background: white;
       border: 1px solid #ead7e4;
       border-radius: 10px;
@@ -310,13 +312,13 @@
       margin-top: 6px;
       font-weight: 700;
       color: var(--violet-dark);
-      font-size: 9pt;
+      font-size: 8.5pt;
     }
 
     .footer-note {
       text-align: center;
       color: var(--muted);
-      font-size: 8.5pt;
+      font-size: 8pt;
       padding: 8px 0 20px;
     }
 
@@ -333,28 +335,28 @@
     .folder-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       margin-top: 10px;
     }
 
     .folder-item {
       border: 1px solid #efb8ca;
       border-radius: 10px;
-      padding: 8px;
+      padding: 6px;
       background: rgba(255,255,255,0.6);
     }
 
     .folder-title {
       font-weight: 700;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
       color: var(--text);
-      font-size: 9pt;
+      font-size: 8.5pt;
     }
 
     .folder-meta {
-      font-size: 8pt;
+      font-size: 7.5pt;
       color: var(--muted);
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       white-space: normal;
       word-break: break-word;
     }
@@ -365,6 +367,13 @@
       flex-wrap: wrap;
     }
 
+    .icon-btn {
+      min-width: 24px;
+      padding: 4px 6px;
+      font-size: 9pt;
+      line-height: 1;
+    }
+
     .sidebar-top-actions {
       display: flex;
       gap: 6px;
@@ -373,7 +382,7 @@
 
     .empty-state {
       color: var(--muted);
-      font-size: 8.5pt;
+      font-size: 8pt;
       padding: 8px 0;
     }
 
@@ -386,6 +395,7 @@
       gap: 6px;
       flex-wrap: wrap;
       justify-content: flex-end;
+      align-items: center;
     }
 
     .directory-item {
@@ -409,8 +419,34 @@
       border-radius: 999px;
       background: #f8eef9;
       color: var(--violet-dark);
-      font-size: 8.5pt;
+      font-size: 8pt;
       font-weight: 700;
+    }
+
+    .fixed-bottom-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 60;
+      background: rgba(255,255,255,0.97);
+      border-top: 1px solid #ead7e4;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.04);
+      padding: 6px 10px;
+    }
+
+    .fixed-bottom-inner {
+      max-width: 1500px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .fixed-bottom-inner button,
+    .fixed-bottom-inner label {
+      font-size: 8pt;
     }
   </style>
 </head>
@@ -419,8 +455,9 @@
     <h1>État des lieux</h1>
     <div class="top-switchers">
       <button onclick="showSection('edl')">État des lieux</button>
-      <button class="secondary" onclick="showSection('sci')">Répertoire SCI</button>
-      <button class="secondary" onclick="showSection('tenant')">Répertoire locataires</button>
+      <button class="secondary" onclick="showSection('sci')">SCI</button>
+      <button class="secondary" onclick="showSection('tenant')">Locataires</button>
+      <button class="secondary" onclick="showSection('property')">Biens</button>
     </div>
   </header>
 
@@ -429,7 +466,7 @@
       <h3>États créés</h3>
       <div class="sidebar-top-actions">
         <button class="secondary" onclick="newDocument()">Nouveau</button>
-        <button class="secondary" onclick="saveCurrentDocument()">Enregistrer</button>
+        <button class="secondary" onclick="saveCurrentDocument()">Sauver</button>
       </div>
       <div id="savedFolders" class="folder-list"></div>
     </aside>
@@ -439,9 +476,9 @@
 
         <section id="section-edl">
           <div class="card">
-            <h2 class="section-title">Sélection des contacts</h2>
+            <h2 class="section-title">Sélection des répertoires</h2>
 
-            <div class="grid grid-2">
+            <div class="grid grid-3">
               <div>
                 <label>SCI</label>
                 <select id="selectedSci" onchange="applySelectedSci()">
@@ -452,6 +489,12 @@
                 <label>Locataire</label>
                 <select id="selectedTenant" onchange="applySelectedTenant()">
                   <option value="">Sélectionner un locataire</option>
+                </select>
+              </div>
+              <div>
+                <label>Bien</label>
+                <select id="selectedProperty" onchange="applySelectedProperty()">
+                  <option value="">Sélectionner un bien</option>
                 </select>
               </div>
             </div>
@@ -551,7 +594,7 @@
             <div class="room-header">
               <div>
                 <h2 class="section-title" style="margin-bottom:2px;">Pièces</h2>
-                <div class="small">Version compacte : élément, état et commentaire sur une seule ligne.</div>
+                <div class="small">Affichage compact.</div>
               </div>
               <div>
                 <button onclick="addRoom()">Ajouter une pièce</button>
@@ -562,25 +605,71 @@
           </div>
 
           <div class="card">
-            <h2 class="section-title">Signatures</h2>
+            <h2 class="section-title">Signatures état d’entrée</h2>
             <div class="grid grid-2">
               <div class="signature-box">
-                <label>Signature bailleur / représentant</label>
-                <canvas id="signatureLandlord"></canvas>
+                <label>Signature bailleur / représentant - entrée</label>
+                <canvas id="signatureLandlordEntry"></canvas>
                 <div class="mention">Lu et approuvé</div>
-                <div class="mini-top-space">
-                  <button class="secondary" onclick="clearSignature('landlord')">Effacer</button>
-                </div>
               </div>
 
               <div class="signature-box">
-                <label>Signature locataire</label>
-                <canvas id="signatureTenant"></canvas>
+                <label>Signature locataire - entrée</label>
+                <canvas id="signatureTenantEntry"></canvas>
                 <div class="mention">Lu et approuvé</div>
-                <div class="mini-top-space">
-                  <button class="secondary" onclick="clearSignature('tenant')">Effacer</button>
-                </div>
               </div>
+            </div>
+
+            <div class="grid grid-3 mini-top-space">
+              <div>
+                <label>Lieu - entrée</label>
+                <input type="text" id="entryPlace">
+              </div>
+              <div>
+                <label>Date - entrée</label>
+                <input type="date" id="entryDate">
+              </div>
+              <div>
+                <label>Nombre d’exemplaires - entrée</label>
+                <input type="text" id="entryCopies">
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 class="section-title">Signatures état de sortie</h2>
+            <div class="grid grid-2">
+              <div class="signature-box">
+                <label>Signature bailleur / représentant - sortie</label>
+                <canvas id="signatureLandlordExit"></canvas>
+                <div class="mention">Lu et approuvé</div>
+              </div>
+
+              <div class="signature-box">
+                <label>Signature locataire - sortie</label>
+                <canvas id="signatureTenantExit"></canvas>
+                <div class="mention">Lu et approuvé</div>
+              </div>
+            </div>
+
+            <div class="grid grid-3 mini-top-space">
+              <div>
+                <label>Lieu - sortie</label>
+                <input type="text" id="exitPlace">
+              </div>
+              <div>
+                <label>Date - sortie</label>
+                <input type="date" id="exitDate">
+              </div>
+              <div>
+                <label>Nombre d’exemplaires - sortie</label>
+                <input type="text" id="exitCopies">
+              </div>
+            </div>
+
+            <div class="mini-top-space">
+              <label>Initiales de paraphe</label>
+              <input type="text" id="parapheInitials" placeholder="Ex. A.B.">
             </div>
 
             <div class="mini-top-space">
@@ -589,22 +678,8 @@
             </div>
           </div>
 
-          <div class="card">
-            <div class="compact-tools">
-              <button class="secondary" onclick="saveLocal()">Enregistrer localement</button>
-              <button class="secondary" onclick="saveCurrentDocument()">Sauver ce dossier</button>
-              <button class="secondary" onclick="exportJson()">Exporter JSON</button>
-              <label class="secondary" style="display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:10px;cursor:pointer;">
-                Importer JSON
-                <input type="file" accept="application/json" onchange="importJson(event)" style="display:none;">
-              </label>
-              <button class="ok" onclick="generatePdf()">Exporter PDF</button>
-              <button class="danger" onclick="resetApp()">Réinitialiser</button>
-            </div>
-          </div>
-
           <div class="footer-note">
-            Sauvegarde locale + répertoire SCI / locataires + états des lieux + PDF
+            Sauvegarde locale + répertoires + PDF
           </div>
         </section>
 
@@ -672,8 +747,56 @@
           </div>
         </section>
 
+        <section id="section-property" class="hidden">
+          <div class="card">
+            <h2 class="section-title">Répertoire biens</h2>
+            <div class="grid grid-3">
+              <div>
+                <label>Nom du bien</label>
+                <input type="text" id="propertyName">
+              </div>
+              <div>
+                <label>SCI liée</label>
+                <select id="propertySciSelect">
+                  <option value="">Sélectionner une SCI</option>
+                </select>
+              </div>
+              <div>
+                <label>Usage</label>
+                <input type="text" id="propertyUsage" placeholder="Ex. habitation">
+              </div>
+            </div>
+            <div class="mini-top-space">
+              <label>Adresse du bien</label>
+              <textarea id="propertyAddress"></textarea>
+            </div>
+            <div class="mini-top-space">
+              <button onclick="savePropertyDirectory()">Ajouter le bien</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 class="section-title">Biens enregistrés</h2>
+            <div id="propertyList"></div>
+          </div>
+        </section>
+
       </div>
     </main>
+  </div>
+
+  <div class="fixed-bottom-bar">
+    <div class="fixed-bottom-inner">
+      <button class="secondary" onclick="saveLocal()">Local</button>
+      <button class="secondary" onclick="saveCurrentDocument()">Sauver</button>
+      <button class="secondary" onclick="exportJson()">JSON</button>
+      <label class="secondary" style="display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:9px;cursor:pointer;">
+        Import JSON
+        <input type="file" accept="application/json" onchange="importJson(event)" style="display:none;">
+      </label>
+      <button class="ok" onclick="generatePdf()">PDF</button>
+      <button class="danger" onclick="resetApp()">Réinit.</button>
+    </div>
   </div>
 
   <script>
@@ -695,14 +818,14 @@
       activeSection: 'edl'
     };
 
-    let landlordPad = null;
-    let tenantPad = null;
+    const signaturePads = {};
 
     function showSection(section) {
       state.activeSection = section;
       document.getElementById('section-edl').classList.add('hidden');
       document.getElementById('section-sci').classList.add('hidden');
       document.getElementById('section-tenant').classList.add('hidden');
+      document.getElementById('section-property').classList.add('hidden');
       document.getElementById('section-' + section).classList.remove('hidden');
     }
 
@@ -805,10 +928,10 @@
         <div class="card">
           <div class="room-header">
             <div style="flex:1;min-width:200px;">
-              <input type="text" value="${escapeHtml(room.name)}" oninput="updateRoomName('${room.id}', this.value)" style="font-size:10pt;font-weight:700;">
+              <input type="text" value="${escapeHtml(room.name)}" oninput="updateRoomName('${room.id}', this.value)" style="font-size:9pt;font-weight:700;">
             </div>
             <div class="inline-actions">
-              <button class="danger" onclick="removeRoom('${room.id}')">Supprimer la pièce</button>
+              <button class="danger" onclick="removeRoom('${room.id}')">Supprimer</button>
             </div>
           </div>
 
@@ -878,7 +1001,7 @@
               <input type="text" value="${escapeHtml(current.comment)}" oninput="updateElementField('${roomId}', ${index}, '${side}', 'comment', this.value)">
             </div>
             <div style="align-self:end;">
-              <button class="danger" onclick="removeElement('${roomId}', ${index})">Supprimer</button>
+              <button class="danger" onclick="removeElement('${roomId}', ${index})">Suppr.</button>
             </div>
           </div>
 
@@ -929,6 +1052,17 @@
       saveLocal();
     }
 
+    function getSignatureData(id) {
+      const pad = signaturePads[id];
+      return pad && !pad.isEmpty() ? pad.toDataURL() : '';
+    }
+
+    function clearSignature(id) {
+      const pad = signaturePads[id];
+      if (pad) pad.clear();
+      saveLocal();
+    }
+
     function collectFormData() {
       return {
         id: state.currentDocumentId,
@@ -948,13 +1082,25 @@
         releveGaz: document.getElementById('releveGaz').value,
         nombreCles: document.getElementById('nombreCles').value,
         dispositifs: document.getElementById('dispositifs').value,
+        selectedSci: document.getElementById('selectedSci').value,
+        selectedTenant: document.getElementById('selectedTenant').value,
+        selectedProperty: document.getElementById('selectedProperty').value,
+        entryPlace: document.getElementById('entryPlace').value,
+        entryDate: document.getElementById('entryDate').value,
+        entryCopies: document.getElementById('entryCopies').value,
+        exitPlace: document.getElementById('exitPlace').value,
+        exitDate: document.getElementById('exitDate').value,
+        exitCopies: document.getElementById('exitCopies').value,
+        parapheInitials: document.getElementById('parapheInitials').value,
         rooms: state.rooms,
         currentTab: state.currentTab,
         currentDocumentId: state.currentDocumentId,
         approved: state.approved,
         signatures: {
-          landlord: landlordPad && !landlordPad.isEmpty() ? landlordPad.toDataURL() : '',
-          tenant: tenantPad && !tenantPad.isEmpty() ? tenantPad.toDataURL() : ''
+          landlordEntry: getSignatureData('signatureLandlordEntry'),
+          tenantEntry: getSignatureData('signatureTenantEntry'),
+          landlordExit: getSignatureData('signatureLandlordExit'),
+          tenantExit: getSignatureData('signatureTenantExit')
         }
       };
     }
@@ -980,6 +1126,17 @@
       document.getElementById('releveGaz').value = data.releveGaz || '';
       document.getElementById('nombreCles').value = data.nombreCles || '';
       document.getElementById('dispositifs').value = data.dispositifs || '';
+      document.getElementById('selectedSci').value = data.selectedSci || '';
+      document.getElementById('selectedTenant').value = data.selectedTenant || '';
+      document.getElementById('selectedProperty').value = data.selectedProperty || '';
+      document.getElementById('entryPlace').value = data.entryPlace || '';
+      document.getElementById('entryDate').value = data.entryDate || '';
+      document.getElementById('entryCopies').value = data.entryCopies || '';
+      document.getElementById('exitPlace').value = data.exitPlace || '';
+      document.getElementById('exitDate').value = data.exitDate || '';
+      document.getElementById('exitCopies').value = data.exitCopies || '';
+      document.getElementById('parapheInitials').value = data.parapheInitials || '';
+
       state.rooms = Array.isArray(data.rooms) ? data.rooms : [];
       state.currentTab = data.currentTab || 'entry';
       state.currentDocumentId = data.currentDocumentId || data.id || null;
@@ -988,10 +1145,15 @@
       renderRooms();
 
       setTimeout(() => {
-        if (landlordPad) landlordPad.clear();
-        if (tenantPad) tenantPad.clear();
-        if (data.signatures && data.signatures.landlord && landlordPad) landlordPad.fromDataURL(data.signatures.landlord);
-        if (data.signatures && data.signatures.tenant && tenantPad) tenantPad.fromDataURL(data.signatures.tenant);
+        ['signatureLandlordEntry','signatureTenantEntry','signatureLandlordExit','signatureTenantExit'].forEach(id => {
+          if (signaturePads[id]) signaturePads[id].clear();
+        });
+
+        if (data.signatures?.landlordEntry) signaturePads.signatureLandlordEntry?.fromDataURL(data.signatures.landlordEntry);
+        if (data.signatures?.tenantEntry) signaturePads.signatureTenantEntry?.fromDataURL(data.signatures.tenantEntry);
+        if (data.signatures?.landlordExit) signaturePads.signatureLandlordExit?.fromDataURL(data.signatures.landlordExit);
+        if (data.signatures?.tenantExit) signaturePads.signatureTenantExit?.fromDataURL(data.signatures.tenantExit);
+
         updateApprovalStatus();
       }, 60);
     }
@@ -1047,12 +1209,6 @@
       reader.readAsText(file);
     }
 
-    function clearSignature(side) {
-      if (side === 'landlord' && landlordPad) landlordPad.clear();
-      if (side === 'tenant' && tenantPad) tenantPad.clear();
-      saveLocal();
-    }
-
     function resetApp() {
       if (!confirm('Tout effacer ?')) return;
       localStorage.removeItem('edl-app-data');
@@ -1061,11 +1217,11 @@
       location.reload();
     }
 
-    function setupSignaturePad() {
-      const landlordCanvas = document.getElementById('signatureLandlord');
-      const tenantCanvas = document.getElementById('signatureTenant');
+    function setupSignaturePad(id) {
+      const canvas = document.getElementById(id);
+      if (!canvas) return;
 
-      function resizeCanvas(canvas) {
+      function resizeCanvas() {
         const ratio = Math.max(window.devicePixelRatio || 1, 1);
         const rect = canvas.getBoundingClientRect();
         canvas.width = rect.width * ratio;
@@ -1075,29 +1231,17 @@
         ctx.scale(ratio, ratio);
       }
 
-      resizeCanvas(landlordCanvas);
-      resizeCanvas(tenantCanvas);
+      resizeCanvas();
+      signaturePads[id] = new SignaturePad(canvas);
 
-      landlordPad = new SignaturePad(landlordCanvas);
-      tenantPad = new SignaturePad(tenantCanvas);
-
-      landlordCanvas.addEventListener('mouseup', saveLocal);
-      tenantCanvas.addEventListener('mouseup', saveLocal);
-      landlordCanvas.addEventListener('touchend', saveLocal);
-      tenantCanvas.addEventListener('touchend', saveLocal);
+      canvas.addEventListener('mouseup', saveLocal);
+      canvas.addEventListener('touchend', saveLocal);
 
       window.addEventListener('resize', () => {
-        const landlordData = landlordPad && !landlordPad.isEmpty() ? landlordPad.toDataURL() : null;
-        const tenantData = tenantPad && !tenantPad.isEmpty() ? tenantPad.toDataURL() : null;
-
-        resizeCanvas(landlordCanvas);
-        resizeCanvas(tenantCanvas);
-
-        landlordPad = new SignaturePad(landlordCanvas);
-        tenantPad = new SignaturePad(tenantCanvas);
-
-        if (landlordData) landlordPad.fromDataURL(landlordData);
-        if (tenantData) tenantPad.fromDataURL(tenantData);
+        const data = signaturePads[id] && !signaturePads[id].isEmpty() ? signaturePads[id].toDataURL() : null;
+        resizeCanvas();
+        signaturePads[id] = new SignaturePad(canvas);
+        if (data) signaturePads[id].fromDataURL(data);
       });
     }
 
@@ -1127,14 +1271,11 @@
       container.innerHTML = docs.map(doc => `
         <div class="folder-item">
           <div class="folder-title">${escapeHtml(doc.reference || 'Sans référence')}</div>
-          <div class="folder-meta">
-            ${escapeHtml(doc.dateEdl || '')}<br>
-            ${escapeHtml(doc.adresse || '')}
-          </div>
+          <div class="folder-meta">${escapeHtml(doc.dateEdl || '')}</div>
           <div class="folder-actions">
-            <button class="secondary" onclick="openSavedDocument('${doc.id}')">Ouvrir</button>
-            <button class="secondary" onclick="duplicateSavedDocument('${doc.id}')">Dupliquer</button>
-            <button class="danger" onclick="deleteSavedDocument('${doc.id}')">Suppr.</button>
+            <button class="secondary icon-btn" title="Ouvrir" onclick="openSavedDocument('${doc.id}')">📂</button>
+            <button class="secondary icon-btn" title="Dupliquer" onclick="duplicateSavedDocument('${doc.id}')">⧉</button>
+            <button class="danger icon-btn" title="Supprimer" onclick="deleteSavedDocument('${doc.id}')">🗑</button>
           </div>
         </div>
       `).join('');
@@ -1235,9 +1376,16 @@
       document.getElementById('dispositifs').value = '';
       document.getElementById('selectedSci').value = '';
       document.getElementById('selectedTenant').value = '';
+      document.getElementById('selectedProperty').value = '';
+      document.getElementById('entryPlace').value = '';
+      document.getElementById('entryDate').value = '';
+      document.getElementById('entryCopies').value = '';
+      document.getElementById('exitPlace').value = '';
+      document.getElementById('exitDate').value = '';
+      document.getElementById('exitCopies').value = '';
+      document.getElementById('parapheInitials').value = '';
 
-      if (landlordPad) landlordPad.clear();
-      if (tenantPad) tenantPad.clear();
+      Object.values(signaturePads).forEach(pad => pad && pad.clear());
 
       setDefaultRooms();
       renderSavedFolders();
@@ -1283,6 +1431,18 @@
       localStorage.setItem('edl-tenant-directory', JSON.stringify(items));
     }
 
+    function getPropertyDirectory() {
+      try {
+        return JSON.parse(localStorage.getItem('edl-property-directory') || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function setPropertyDirectory(items) {
+      localStorage.setItem('edl-property-directory', JSON.stringify(items));
+    }
+
     function saveSciDirectory() {
       const nom = document.getElementById('sciNom').value.trim();
       const tel = document.getElementById('sciTel').value.trim();
@@ -1295,21 +1455,17 @@
       }
 
       const items = getSciDirectory();
-      items.unshift({
-        id: crypto.randomUUID(),
-        nom,
-        tel,
-        email,
-        adresse
-      });
-
+      items.unshift({ id: crypto.randomUUID(), nom, tel, email, adresse });
       setSciDirectory(items);
+
       document.getElementById('sciNom').value = '';
       document.getElementById('sciTel').value = '';
       document.getElementById('sciEmail').value = '';
       document.getElementById('sciAdresse').value = '';
+
       renderSciDirectory();
       renderSciSelect();
+      renderPropertySciSelect();
     }
 
     function saveTenantDirectory() {
@@ -1324,21 +1480,47 @@
       }
 
       const items = getTenantDirectory();
-      items.unshift({
-        id: crypto.randomUUID(),
-        nom,
-        tel,
-        email,
-        adresse
-      });
-
+      items.unshift({ id: crypto.randomUUID(), nom, tel, email, adresse });
       setTenantDirectory(items);
+
       document.getElementById('tenantNom').value = '';
       document.getElementById('tenantTel').value = '';
       document.getElementById('tenantEmail').value = '';
       document.getElementById('tenantAdresse').value = '';
+
       renderTenantDirectory();
       renderTenantSelect();
+    }
+
+    function savePropertyDirectory() {
+      const name = document.getElementById('propertyName').value.trim();
+      const sciId = document.getElementById('propertySciSelect').value;
+      const usage = document.getElementById('propertyUsage').value.trim();
+      const address = document.getElementById('propertyAddress').value.trim();
+
+      if (!name) {
+        alert('Renseigne le nom du bien');
+        return;
+      }
+
+      const items = getPropertyDirectory();
+      items.unshift({
+        id: crypto.randomUUID(),
+        name,
+        sciId,
+        usage,
+        address
+      });
+
+      setPropertyDirectory(items);
+
+      document.getElementById('propertyName').value = '';
+      document.getElementById('propertySciSelect').value = '';
+      document.getElementById('propertyUsage').value = '';
+      document.getElementById('propertyAddress').value = '';
+
+      renderPropertyDirectory();
+      renderPropertySelect();
     }
 
     function renderSciDirectory() {
@@ -1387,6 +1569,33 @@
       `).join('');
     }
 
+    function renderPropertyDirectory() {
+      const container = document.getElementById('propertyList');
+      const items = getPropertyDirectory();
+      const scis = getSciDirectory();
+
+      if (!items.length) {
+        container.innerHTML = '<div class="empty-state">Aucun bien enregistré.</div>';
+        return;
+      }
+
+      container.innerHTML = items.map(item => {
+        const sci = scis.find(s => s.id === item.sciId);
+        return `
+          <div class="directory-item">
+            <div><strong>${escapeHtml(item.name)}</strong></div>
+            <div class="small">${escapeHtml(item.address || '')}</div>
+            <div class="small">SCI liée : ${escapeHtml(sci?.nom || '')}</div>
+            <div class="small">Usage : ${escapeHtml(item.usage || '')}</div>
+            <div class="directory-actions">
+              <button class="secondary" onclick="useProperty('${item.id}')">Utiliser</button>
+              <button class="danger" onclick="deleteProperty('${item.id}')">Supprimer</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
     function renderSciSelect() {
       const select = document.getElementById('selectedSci');
       const items = getSciDirectory();
@@ -1401,6 +1610,20 @@
         items.map(item => `<option value="${item.id}">${escapeHtml(item.nom)}</option>`).join('');
     }
 
+    function renderPropertySelect() {
+      const select = document.getElementById('selectedProperty');
+      const items = getPropertyDirectory();
+      select.innerHTML = '<option value="">Sélectionner un bien</option>' +
+        items.map(item => `<option value="${item.id}">${escapeHtml(item.name)}</option>`).join('');
+    }
+
+    function renderPropertySciSelect() {
+      const select = document.getElementById('propertySciSelect');
+      const items = getSciDirectory();
+      select.innerHTML = '<option value="">Sélectionner une SCI</option>' +
+        items.map(item => `<option value="${item.id}">${escapeHtml(item.nom)}</option>`).join('');
+    }
+
     function useSci(id) {
       document.getElementById('selectedSci').value = id;
       applySelectedSci();
@@ -1410,6 +1633,12 @@
     function useTenant(id) {
       document.getElementById('selectedTenant').value = id;
       applySelectedTenant();
+      showSection('edl');
+    }
+
+    function useProperty(id) {
+      document.getElementById('selectedProperty').value = id;
+      applySelectedProperty();
       showSection('edl');
     }
 
@@ -1445,11 +1674,29 @@
       saveLocal();
     }
 
+    function applySelectedProperty() {
+      const id = document.getElementById('selectedProperty').value;
+      const item = getPropertyDirectory().find(x => x.id === id);
+      if (!item) return;
+
+      document.getElementById('adresse').value = item.address || '';
+      document.getElementById('usageBien').value = item.usage || '';
+
+      if (item.sciId) {
+        document.getElementById('selectedSci').value = item.sciId;
+        applySelectedSci();
+      }
+
+      saveLocal();
+    }
+
     function deleteSci(id) {
       if (!confirm('Supprimer cette SCI ?')) return;
       setSciDirectory(getSciDirectory().filter(x => x.id !== id));
       renderSciDirectory();
       renderSciSelect();
+      renderPropertySciSelect();
+      renderPropertyDirectory();
     }
 
     function deleteTenant(id) {
@@ -1457,6 +1704,13 @@
       setTenantDirectory(getTenantDirectory().filter(x => x.id !== id));
       renderTenantDirectory();
       renderTenantSelect();
+    }
+
+    function deleteProperty(id) {
+      if (!confirm('Supprimer ce bien ?')) return;
+      setPropertyDirectory(getPropertyDirectory().filter(x => x.id !== id));
+      renderPropertyDirectory();
+      renderPropertySelect();
     }
 
     function getImageFormat(dataUrl) {
@@ -1482,29 +1736,38 @@
       );
     }
 
+    function addPdfFooter(doc, pageNumber, pageCount, reference, parapheInitials) {
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+
+      doc.setDrawColor(180, 180, 180);
+      doc.line(12, pageHeight - 18, pageWidth - 12, pageHeight - 18);
+
+      doc.setDrawColor(150, 150, 150);
+      doc.rect(12, pageHeight - 14, 22, 9);
+
+      doc.setFont('times', 'italic');
+      doc.setFontSize(10);
+      doc.text(parapheInitials || '', 16, pageHeight - 8);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.text(reference || '', pageWidth / 2, pageHeight - 8, { align: 'center' });
+      doc.text(`Page ${pageNumber} / ${pageCount}`, pageWidth - 12, pageHeight - 8, { align: 'right' });
+    }
+
     async function generatePdf() {
       const payload = collectFormData();
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ unit: 'mm', format: 'a4' });
 
       const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight();
       const left = 12;
       const right = 198;
       let y = 12;
 
-      function addPageNumbers() {
-        const count = doc.getNumberOfPages();
-        for (let i = 1; i <= count; i++) {
-          doc.setPage(i);
-          doc.setFont('helvetica', 'normal');
-          doc.setFontSize(9);
-          doc.text(`Page ${i} / ${count}`, pageWidth - 28, pageHeight - 8);
-        }
-      }
-
       function ensureSpace(heightNeeded = 10) {
-        if (y + heightNeeded > 275) {
+        if (y + heightNeeded > 268) {
           doc.addPage();
           y = 12;
         }
@@ -1623,15 +1886,12 @@
 
           line('Élément : ' + (element.name || ''), 10, true);
 
-          if (entryFilled && exitFilled) {
+          if (entryFilled) {
             line('Entrée - État : ' + (element.entry?.status || ''));
             line('Entrée - Commentaire : ' + (element.entry?.comment || ''));
-            line('Sortie - État : ' + (element.exit?.status || ''));
-            line('Sortie - Commentaire : ' + (element.exit?.comment || ''));
-          } else if (entryFilled) {
-            line('Entrée - État : ' + (element.entry?.status || ''));
-            line('Entrée - Commentaire : ' + (element.entry?.comment || ''));
-          } else if (exitFilled) {
+          }
+
+          if (exitFilled) {
             line('Sortie - État : ' + (element.exit?.status || ''));
             line('Sortie - Commentaire : ' + (element.exit?.comment || ''));
           }
@@ -1657,28 +1917,59 @@
       doc.addPage();
       y = 12;
 
-      line('Signatures', 13, true);
+      line('Signatures état d’entrée', 13, true);
       divider();
-      line('Mention légale : Lu et approuvé.', 10, true);
+      line('Lieu : ' + (payload.entryPlace || ''));
+      line('Date : ' + (payload.entryDate || ''));
+      line('Nombre d’exemplaires : ' + (payload.entryCopies || ''));
+      divider();
 
-      if (payload.signatures.landlord) {
-        line('Bailleur / représentant', 10, true);
-        try {
-          doc.addImage(payload.signatures.landlord, 'PNG', 12, y, 80, 30);
-        } catch (e) {}
-        y += 34;
+      if (payload.signatures.landlordEntry) {
+        line('Bailleur / représentant - entrée', 10, true);
+        try { doc.addImage(payload.signatures.landlordEntry, 'PNG', 12, y, 80, 26); } catch (e) {}
+        y += 30;
         line('Lu et approuvé');
         divider();
       }
 
-      if (payload.signatures.tenant) {
-        line('Locataire', 10, true);
-        try {
-          doc.addImage(payload.signatures.tenant, 'PNG', 12, y, 80, 30);
-        } catch (e) {}
-        y += 34;
+      if (payload.signatures.tenantEntry) {
+        line('Locataire - entrée', 10, true);
+        try { doc.addImage(payload.signatures.tenantEntry, 'PNG', 12, y, 80, 26); } catch (e) {}
+        y += 30;
         line('Lu et approuvé');
         divider();
+      }
+
+      const hasExitSignatureBlock =
+        payload.exitPlace || payload.exitDate || payload.exitCopies ||
+        payload.signatures.landlordExit || payload.signatures.tenantExit;
+
+      if (hasExitSignatureBlock) {
+        doc.addPage();
+        y = 12;
+
+        line('Signatures état de sortie', 13, true);
+        divider();
+        line('Lieu : ' + (payload.exitPlace || ''));
+        line('Date : ' + (payload.exitDate || ''));
+        line('Nombre d’exemplaires : ' + (payload.exitCopies || ''));
+        divider();
+
+        if (payload.signatures.landlordExit) {
+          line('Bailleur / représentant - sortie', 10, true);
+          try { doc.addImage(payload.signatures.landlordExit, 'PNG', 12, y, 80, 26); } catch (e) {}
+          y += 30;
+          line('Lu et approuvé');
+          divider();
+        }
+
+        if (payload.signatures.tenantExit) {
+          line('Locataire - sortie', 10, true);
+          try { doc.addImage(payload.signatures.tenantExit, 'PNG', 12, y, 80, 26); } catch (e) {}
+          y += 30;
+          line('Lu et approuvé');
+          divider();
+        }
       }
 
       if (payload.approved) {
@@ -1686,19 +1977,29 @@
         divider();
       }
 
-      addPageNumbers();
+      const pageCount = doc.getNumberOfPages();
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        addPdfFooter(doc, i, pageCount, payload.reference || '', payload.parapheInitials || '');
+      }
+
       doc.save((payload.reference || 'etat-des-lieux') + '.pdf');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      setupSignaturePad();
+      ['signatureLandlordEntry','signatureTenantEntry','signatureLandlordExit','signatureTenantExit'].forEach(setupSignaturePad);
+
       document.getElementById('dateEdl').valueAsDate = new Date();
+
       loadLocal();
       renderSavedFolders();
       renderSciDirectory();
       renderTenantDirectory();
+      renderPropertyDirectory();
       renderSciSelect();
       renderTenantSelect();
+      renderPropertySelect();
+      renderPropertySciSelect();
       showSection('edl');
       updateApprovalStatus();
     });
