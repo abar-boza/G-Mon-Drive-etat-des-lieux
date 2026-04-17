@@ -778,26 +778,216 @@
         if (tenantData) tenantPad.fromDataURL(tenantData);
       });
     }
+async function generatePdf() {
+  const payload = collectFormData();
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
 
-    async function generatePdf() {
-      const payload = collectFormData();
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const left = 12;
+  let y = 12;
 
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight();
-      const left = 12;
-      let y = 12;
+  function addPageNumbers() {
+    const count = doc.getNumberOfPages();
+    for (let i = 1; i <= count; i++) {
+      doc.setPage(i);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.text(`Page ${i} / ${count}`, pageWidth - 28, pageHeight - 8);
+    }
+  }
 
-      function addPageNumbers() {
-        const count = doc.getNumberOfPages();
-        for (let i = 1; i <= count; i++) {
-          doc.setPage(i);
-          doc.setFont('helvetica', 'normal');
-          doc.setFontSize(9);
-          doc.text(`Page ${i} / ${count}`, pageWidth - 28, pageHeight - 8);
-        }
+  function ensureSpace(heightNeeded = 10) {
+    if (y + heightNeeded > 275) {
+      doc.addPage();
+      y = 12;
+    }
+  }
+
+  function line(text, size = 10, bold = false) {
+    doc.setFont('helvetica', bold ? 'bold' : 'normal');
+    doc.setFontSize(size);
+    const lines = doc.splitTextToSize(String(text || ''), 185);
+    ensureSpace(lines.length * 5 + 2);
+    doc.text(lines, left, y);
+    y += lines.length * 5 + 1;
+  }
+
+  function block(title, content) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    ensureSpace(12);
+    doc.text(title, left, y);
+    y += 5;
+
+    doc.setFont('helvetica', 'normal');
+    const lines = doc.splitTextToSize(String(content || ''), 183);
+    const height = Math.max(8, lines.length * 5 + 4);
+    ensureSpace(height + 2);
+
+    doc.rect(left, y - 4, 185, height);
+    doc.text(lines, left + 2, y);
+    y += height + 4;
+  }
+
+  function twoCols(title, leftTxt, rightTxt) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    ensureSpace(12);
+    doc.text(title, left, y);
+    y += 5;
+
+    doc.setFont('helvetica', 'normal');
+    const leftLines = doc.splitTextToSize(leftTxt || '', 86);
+    const rightLines = doc.splitTextToSize(rightTxt || '', 86);
+    const h = Math.max(leftLines.length, rightLines.length) * 5 + 4;
+
+    ensureSpace(h + 2);
+
+    doc.rect(left, y - 4, 88, h);
+    doc.rect(109, y - 4, 88, h);
+    doc.text(leftLines, left + 2, y);
+    doc.text(rightLines, 111, y);
+    y += h + 4;
+  }
+
+  function getImageFormat(dataUrl) {
+    if (!dataUrl || typeof dataUrl !== 'string') return 'JPEG';
+    if (dataUrl.startsWith('data:image/png')) return 'PNG';
+    if (dataUrl.startsWith('data:image/webp')) return 'WEBP';
+    return 'JPEG';
+  }
+
+  async function addPhotoGallery(title, photos) {
+    if (!photos || !photos.length) return;
+
+    line(title, 10, true);
+
+    const imgWidth = 40;
+    const imgHeight = 30;
+    const gap = 6;
+    const perRow = 4;
+    let col = 0;
+
+    for (let i = 0; i < photos.length; i++) {
+      const photo = photos[i];
+      const format = getImageFormat(photo);
+
+      if (col === 0) {
+        ensureSpace(imgHeight + 8);
       }
+
+      const x = left + col * (imgWidth + gap);
+
+      try {
+        doc.addImage(photo, format, x, y, imgWidth, imgHeight);
+      } catch (e) {
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(9);
+        doc.text('[Photo non insérée]', x, y + 10);
+      }
+
+      col++;
+
+      if (col >= perRow) {
+        col = 0;
+        y += imgHeight + 6;
+      }
+    }
+
+    if (col !== 0) {
+      y += imgHeight + 6;
+    }
+  }
+
+  line('ÉTAT DES LIEUX', 15, true);
+  line('Référence : ' + (payload.reference || ''), 10, true);
+  line('Date : ' + (payload.dateEdl || '') + ' - Type : ' + (payload.typeEdl || ''));
+  line('Adresse : ' + (payload.adresse || ''));
+  line('Propriétaire : ' + (payload.proprietaire || ''));
+  line('Locataire : ' + (payload.locataire || ''));
+  line('Agent / Représentant : ' + (payload.agent || ''));
+  line('Observations générales : ' + (payload.observations || ''));
+
+  block(
+    'Relevés et informations',
+    'Relevé eau : ' + (payload.releveEau || '') + '\n' +
+    'Relevé électricité : ' + (payload.releveElectricite || '') + '\n' +
+    'Relevé gaz : ' + (payload.releveGaz || '') + '\n' +
+    'Nombre de clés : ' + (payload.nombreCles || '') + '\n' +
+    'Moyens / dispositifs en place : ' + (payload.dispositifs || '')
+  );
+
+  doc.addPage();
+  y = 12;
+
+  line('Mentions légales', 13, true);
+  block(
+    'Cadre de l’état des lieux',
+    "Le présent état des lieux est établi contradictoirement entre les parties. Il décrit l’état du logement, de ses équipements, des relevés, des clés remises, des dispositifs en place, des observations et des photographies jointes au document à la date de signature."
+  );
+  block(
+    'Validation',
+    "Les signataires reconnaissent avoir pris connaissance du présent état des lieux, l’avoir vérifié, lu et approuvé."
+  );
+
+  for (const room of payload.rooms) {
+    doc.addPage();
+    y = 12;
+
+    line('Pièce : ' + (room.name || ''), 13, true);
+
+    const elements = Array.isArray(room.elements) ? room.elements : [];
+
+    for (const element of elements) {
+      twoCols(
+        'Élément : ' + (element.name || ''),
+        'ENTRÉE\nÉtat : ' + (element.entry?.status || '') + '\nCommentaire : ' + (element.entry?.comment || ''),
+        'SORTIE\nÉtat : ' + (element.exit?.status || '') + '\nCommentaire : ' + (element.exit?.comment || '')
+      );
+
+      await addPhotoGallery(
+        'Photos entrée - ' + (element.name || ''),
+        element.entry?.photos || []
+      );
+
+      await addPhotoGallery(
+        'Photos sortie - ' + (element.name || ''),
+        element.exit?.photos || []
+      );
+    }
+  }
+
+  doc.addPage();
+  y = 12;
+
+  line('Signatures', 13, true);
+  line('Mention légale : Lu et approuvé.', 10, true);
+
+  if (payload.signatures.landlord) {
+    line('Bailleur / représentant', 10, true);
+    try {
+      doc.addImage(payload.signatures.landlord, 'PNG', 12, y, 80, 30);
+    } catch (e) {}
+    y += 34;
+    line('Lu et approuvé');
+  }
+
+  if (payload.signatures.tenant) {
+    y += 4;
+    line('Locataire', 10, true);
+    try {
+      doc.addImage(payload.signatures.tenant, 'PNG', 12, y, 80, 30);
+    } catch (e) {}
+    y += 34;
+    line('Lu et approuvé');
+  }
+
+  addPageNumbers();
+  doc.save((payload.reference || 'etat-des-lieux') + '.pdf');
+}
+   
 
       function line(text, size = 10, bold = false) {
         doc.setFont('helvetica', bold ? 'bold' : 'normal');
