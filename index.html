@@ -1,1 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etat des lieux</title>
 
+<style>
+body {
+  font-family: Arial;
+  background: #f5f5f5;
+  padding: 20px;
+}
+h1 { margin-bottom: 10px; }
+
+.room {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.item {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+select, input, textarea {
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 8px;
+  margin-top: 5px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Etat des lieux</h1>
+
+<button onclick="addRoom()">Ajouter une pièce</button>
+
+<div id="app"></div>
+
+<script>
+let rooms = [];
+
+function addRoom() {
+  const name = prompt("Nom de la pièce ?");
+  if (!name) return;
+
+  rooms.push({
+    name,
+    items: []
+  });
+
+  render();
+}
+
+function addItem(roomIndex) {
+  const label = prompt("Élément à contrôler ?");
+  if (!label) return;
+
+  rooms[roomIndex].items.push({
+    label,
+    entry: "",
+    exit: ""
+  });
+
+  render();
+}
+
+function update(roomIndex, itemIndex, type, value) {
+  rooms[roomIndex].items[itemIndex][type] = value;
+}
+
+function render() {
+  const app = document.getElementById("app");
+  app.innerHTML = "";
+
+  rooms.forEach((room, rIndex) => {
+    const div = document.createElement("div");
+    div.className = "room";
+
+    div.innerHTML = `
+      <h2>${room.name}</h2>
+      <button onclick="addItem(${rIndex})">Ajouter contrôle</button>
+    `;
+
+    room.items.forEach((item, iIndex) => {
+      const itemDiv = document.createElement("div");
+      itemDiv.className = "item";
+
+      itemDiv.innerHTML = `
+        <strong>${item.label}</strong>
+
+        <label>Etat entrée</label>
+        <select onchange="update(${rIndex}, ${iIndex}, 'entry', this.value)">
+          <option></option>
+          <option>Neuf</option>
+          <option>Bon</option>
+          <option>Usage</option>
+          <option>Moyen</option>
+          <option>Mauvais</option>
+        </select>
+
+        <label>Etat sortie</label>
+        <select onchange="update(${rIndex}, ${iIndex}, 'exit', this.value)">
+          <option></option>
+          <option>Neuf</option>
+          <option>Bon</option>
+          <option>Usage</option>
+          <option>Moyen</option>
+          <option>Mauvais</option>
+        </select>
+      `;
+
+      div.appendChild(itemDiv);
+    });
+
+    app.appendChild(div);
+  });
+}
+</script>
+
+</body>
+</html>
