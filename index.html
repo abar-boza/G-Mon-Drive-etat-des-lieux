@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>État des lieux</title>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #fcf8fd;
+      --card: #ffffff;
+      --line: #eadcf1;
+      --text: #2c1338;
+      --muted: #7b647f;
+      --violet: #7c3aed;
+      --violet-dark: #5b21b6;
+      --rose: #ec4899;
+      --rose-light: #fde7f3;
+      --danger: #b42318;
+      --ok: #067647;
+      --tab-bg: #f8ecfb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10pt;
+      background: linear-gradient(180deg, #fff8fd 0%, #f9f4ff 100%);
+      color: var(--text);
+    }
+
+    header {
+      padding: 14px;
+      background: linear-gradient(135deg, var(--violet-dark), var(--rose));
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 4px 16px rgba(91, 33, 182, 0.22);
+    }
+
+    header h1 {
+      margin: 0 0 10px;
+      font-size: 15pt;
+      line-height: 1.2;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 12px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 5px 16px rgba(124, 58, 237, 0.05);
+    }
+
+    .grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    @media (max-width: 900px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: var(--violet-dark);
+    }
+
+    input, select, textarea, button {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10pt;
+    }
+
+    input[type="text"], input[type="date"], input[type="number"], textarea, select {
+      width: 100%;
+      padding: 10px 11px;
+      border-radius: 11px;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 78px;
+      resize: vertical;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 10px 13px;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--violet), var(--rose));
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.18);
+    }
+
+    button.secondary {
+      background: #f5eafb;
+      color: var(--violet-dark);
+      box-shadow: none;
+      border: 1px solid var(--line);
+    }
+
+    button.danger {
+      background: #ffe5e5;
+      color: #9b1c1c;
+      box-shadow: none;
+      border: 1px solid #f4c7c7;
+    }
+
+    button.ok {
+      background: linear-gradient(135deg, var(--violet-dark), var(--violet));
+    }
+
+    .small {
+      font-size: 9pt;
+      color: var(--muted);
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: 12pt;
+      color: var(--violet-dark);
+    }
+
+    .room-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tabbar {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 120px;
+      background: var(--tab-bg);
+      color: var(--violet-dark);
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--violet), var(--rose));
+      color: white;
+      border: none;
+    }
+
+    .element-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px;
+      background: #fff;
+      margin-bottom: 10px;
+    }
+
+    .photo-preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .photo-preview img {
+      width: 72px;
+      height: 72px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+    }
+
+    .signature-box {
+      border: 1px dashed var(--line);
+      border-radius: 14px;
+      padding: 10px;
+      background: white;
+    }
+
+    canvas {
+      width: 100%;
+      height: 180px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      touch-action: none;
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: #fffafc;
+    }
+
+    details summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--violet-dark);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--rose-light);
+      color: var(--violet-dark);
+      font-size: 9pt;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      padding: 12px 0 22px;
+      font-size: 9pt;
+    }
+
+    .inline-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .mention {
+      margin-top: 6px;
+      font-weight: 700;
+      color: var(--violet-dark);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>État des lieux</h1>
+    <div class="toolbar">
+      <button onclick="saveLocal()">Enregistrer</button>
+      <button class="secondary" onclick="exportJson()">Exporter JSON</button>
+      <label class="secondary" style="display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:#f5eafb;color:#5b21b6;font-weight:700;cursor:pointer;border:1px solid var(--line);">
+        Importer JSON
+        <input type="file" accept="application/json" onchange="importJson(event)" style="display:none;">
+      </label>
+      <button class="ok" onclick="generatePdf()">Exporter PDF</button>
+      <button class="danger" onclick="resetApp()">Réinitialiser</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2 class="section-title">Informations générales</h2>
+      <div class="grid grid-3">
+        <div>
+          <label>Référence dossier</label>
+          <input type="text" id="reference" placeholder="Ex. EDL-2026-001">
+        </div>
+        <div>
+          <label>Date</label>
+          <input type="date" id="dateEdl">
+        </div>
+        <div>
+          <label>Type</label>
+          <select id="typeEdl">
+            <option>Entrée</option>
+            <option>Sortie</option>
+            <option>Comparatif entrée / sortie</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-2" style="margin-top:10px;">
+        <div>
+          <label>Bien / Adresse</label>
+          <textarea id="adresse" placeholder="Adresse complète du bien"></textarea>
+        </div>
+        <div>
+          <label>Observations générales</label>
+          <textarea id="observations" placeholder="Commentaires généraux"></textarea>
+        </div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:10px;">
+        <div>
+          <label>Propriétaire</label>
+          <input type="text" id="proprietaire">
+        </div>
+        <div>
+          <label>Locataire</label>
+          <input type="text" id="locataire">
+        </div>
+        <div>
+          <label>Agent / Représentant</label>
+          <input type="text" id="agent">
+        </div>
+      </div>
+
+      <div class="grid grid-4" style="margin-top:10px;">
+        <div>
+          <label>Relevé eau</label>
+          <input type="text" id="releveEau">
+        </div>
+        <div>
+          <label>Relevé électricité</label>
+          <input type="text" id="releveElectricite">
+        </div>
+        <div>
+          <label>Relevé gaz</label>
+          <input type="text" id="releveGaz">
+        </div>
+        <div>
+          <label>Nombre de clés</label>
+          <input type="text" id="nombreCles">
+        </div>
+      </div>
+
+      <div style="margin-top:10px;">
+        <label>Moyens / dispositifs en place</label>
+        <textarea id="dispositifs" placeholder="Ex. Alarme incendie, détecteur de fumée, fibre internet, interphone, badge, télécommande portail, visiophone..."></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="room-header">
+        <div>
+          <h2 class="section-title" style="margin-bottom:2px;">Pièces</h2>
+          <div class="small">Affichage pensé pour téléphone avec onglets Entrée / Sortie.</div>
+        </div>
+        <div>
+          <button onclick="addRoom()">Ajouter une pièce</button>
+        </div>
+      </div>
+
+      <details style="margin-bottom:12px;">
+        <summary>Modèles rapides de pièces</summary>
+        <div style="margin-top:10px;">
+          <span class="pill">Entrée</span>
+          <span class="pill">Séjour</span>
+          <span class="pill">Cuisine</span>
+          <span class="pill">Chambre</span>
+          <span class="pill">Salle de bain</span>
+          <span class="pill">WC</span>
+          <span class="pill">Couloir</span>
+          <span class="pill">Balcon</span>
+          <span class="pill">Cave</span>
+          <span class="pill">Garage</span>
+        </div>
+      </details>
+
+      <div id="rooms"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">Signatures</h2>
+      <div class="grid grid-2">
+        <div class="signature-box">
+          <label>Signature bailleur / représentant</label>
+          <canvas id="signatureLandlord"></canvas>
+          <div class="mention">Lu et approuvé</div>
+          <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="secondary" onclick="clearSignature('landlord')">Effacer</button>
+          </div>
+        </div>
+        <div class="signature-box">
+          <label>Signature locataire</label>
+          <canvas id="signatureTenant"></canvas>
+          <div class="mention">Lu et approuvé</div>
+          <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="secondary" onclick="clearSignature('tenant')">Effacer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      Version mobile. Sauvegarde locale + export JSON + PDF.
+    </div>
+  </div>
+
+  <script>
+    const roomElementPresets = {
+      standard: ['Sol', 'Murs', 'Plafond', 'Porte', 'Fenêtre', 'Électricité', 'Chauffage', 'Éclairage', 'Prises', 'Divers'],
+      kitchen: ['Sol', 'Murs', 'Plafond', 'Porte', 'Fenêtre', 'Électricité', 'Évier', 'Robinetterie', 'Plan de travail', 'Meubles', 'Hotte', 'Divers'],
+      bathroom: ['Sol', 'Murs', 'Plafond', 'Porte', 'Fenêtre', 'Électricité', 'Lavabo', 'Robinetterie', 'Douche / Baignoire', 'WC', 'VMC', 'Divers'],
+      wc: ['Sol', 'Murs', 'Plafond', 'Porte', 'Fenêtre', 'Électricité', 'WC', 'Chasse d eau', 'VMC', 'Divers']
+    };
+
+    const statusOptions = ['Neuf', 'Très bon', 'Bon', 'Usage', 'Moyen', 'Mauvais', 'À remplacer', 'Absent'];
+
+    const state = {
+      rooms: [],
+      currentTab: 'entry'
+    };
+
+    let landlordPad;
+    let tenantPad;
+
+    function defaultElementsForRoomType(name) {
+      const v = (name || '').toLowerCase();
+      if (v.includes('cuisine')) return roomElementPresets.kitchen;
+      if (v.includes('salle de bain') || v.includes('sdb')) return roomElementPresets.bathroom;
+      if (v === 'wc' || v.includes('toilette')) return roomElementPresets.wc;
+      return roomElementPresets.standard;
+    }
+
+    function createElement(name) {
+      return {
+        name,
+        entry: { status: 'Bon', comment: '', photos: [] },
+        exit: { status: 'Bon', comment: '', photos: [] }
+      };
+    }
+
+    function addRoom(name = 'Nouvelle pièce') {
+      const elements = defaultElementsForRoomType(name).map(createElement);
+      state.rooms.push({ id: crypto.randomUUID(), name, elements });
+      renderRooms();
+      saveLocal();
+    }
+
+    function removeRoom(id) {
+      state.rooms = state.rooms.filter(r => r.id !== id);
+      renderRooms();
+      saveLocal();
+    }
+
+    function addElement(roomId) {
+      const room = state.rooms.find(r => r.id === roomId);
+      room.elements.push(createElement('Nouvel élément'));
+      renderRooms();
+      saveLocal();
+    }
+
+    function removeElement(roomId, elementIndex) {
+      const room = state.rooms.find(r => r.id === roomId);
+      room.elements.splice(elementIndex, 1);
+      renderRooms();
+      saveLocal();
+    }
+
+    function updateRoomName(roomId, value) {
+      const room = state.rooms.find(r => r.id === roomId);
+      room.name = value;
+      saveLocal();
+    }
+
+    function updateElementField(roomId, elementIndex, side, field, value) {
+      const room = state.rooms.find(r => r.id === roomId);
+      room.elements[elementIndex][side][field] = value;
+      saveLocal();
+    }
+
+    function updateElementName(roomId, elementIndex, value) {
+      const room = state.rooms.find(r => r.id === roomId);
+      room.elements[elementIndex].name = value;
+      saveLocal();
+    }
+
+    function switchTab(tab) {
+      state.currentTab = tab;
+      renderRooms();
+      saveLocal();
+    }
+
+    function toBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function handlePhotos(event, roomId, elementIndex, side) {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+      const room = state.rooms.find(r => r.id === roomId);
+      const element = room.elements[elementIndex][side];
+      for (const file of files) {
+        const b64 = await toBase64(file);
+        element.photos.push(b64);
+      }
+      renderRooms();
+      saveLocal();
+    }
+
+    function removePhoto(roomId, elementIndex, side, photoIndex) {
+      const room = state.rooms.find(r => r.id === roomId);
+      room.elements[elementIndex][side].photos.splice(photoIndex, 1);
+      renderRooms();
+      saveLocal();
+    }
+
+    function roomTemplate(room) {
+      return `
+        <div class="card">
+          <div class="room-header">
+            <div style="flex:1;min-width:220px;">
+              <input type="text" value="${escapeHtml(room.name)}" oninput="updateRoomName('${room.id}', this.value)" style="font-size:11pt;font-weight:700;">
+            </div>
+            <div class="inline-actions">
+              <button class="danger" onclick="removeRoom('${room.id}')">Supprimer la pièce</button>
+            </div>
+          </div>
+
+          <div class="tabbar">
+            <button class="tab-btn ${state.currentTab === 'entry' ? 'active' : ''}" onclick="switchTab('entry')">Entrée</button>
+            <button class="tab-btn ${state.currentTab === 'exit' ? 'active' : ''}" onclick="switchTab('exit')">Sortie</button>
+          </div>
+
+          <div style="margin-top:10px;">
+            ${room.elements.map((element, index) => elementCardTemplate(room.id, element, index)).join('')}
+          </div>
+
+          <div style="margin-top:8px;">
+            <button class="secondary" onclick="addElement('${room.id}')">Ajouter un élément</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function statusSelect(roomId, elementIndex, side, value) {
+      return `
+        <select onchange="updateElementField('${roomId}', ${elementIndex}, '${side}', 'status', this.value)">
+          ${statusOptions.map(opt => `<option ${opt === value ? 'selected' : ''}>${opt}</option>`).join('')}
+        </select>
+      `;
+    }
+
+    function photosHtml(roomId, elementIndex, side, photos) {
+      return `
+        <div>
+          <label style="margin-top:8px;">Photos</label>
+          <input type="file" accept="image/*" capture="environment" multiple onchange="handlePhotos(event, '${roomId}', ${elementIndex}, '${side}')">
+          <div class="photo-preview">
+            ${photos.map((src, i) => `
+              <div style="position:relative;">
+                <img src="${src}" alt="photo">
+                <button type="button" onclick="removePhoto('${roomId}', ${elementIndex}, '${side}', ${i})" style="position:absolute;top:-6px;right:-6px;padding:2px 6px;border-radius:999px;background:#ec4899;color:#fff;border:0;">x</button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function elementCardTemplate(roomId, element, index) {
+      const side = state.currentTab;
+      const current = element[side];
+      return `
+        <div class="element-card">
+          <div class="grid grid-2">
+            <div>
+              <label>Élément</label>
+              <input type="text" value="${escapeHtml(element.name)}" oninput="updateElementName('${roomId}', ${index}, this.value)">
+            </div>
+            <div>
+              <label>État</label>
+              ${statusSelect(roomId, index, side, current.status)}
+            </div>
+          </div>
+
+          <div style="margin-top:8px;">
+            <label>Commentaire ${side === 'entry' ? 'entrée' : 'sortie'}</label>
+            <textarea oninput="updateElementField('${roomId}', ${index}, '${side}', 'comment', this.value)">${escapeHtml(current.comment)}</textarea>
+          </div>
+
+          <div style="margin-top:8px;">
+            ${photosHtml(roomId, index, side, current.photos)}
+          </div>
+
+          <div style="margin-top:8px;">
+            <button class="danger" onclick="removeElement('${roomId}', ${index})">Supprimer l’élément</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderRooms() {
+      document.getElementById('rooms').innerHTML = state.rooms.map(roomTemplate).join('');
+    }
+
+    function escapeHtml(str) {
+      return (str || '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function saveLocal() {
+      const payload = collectFormData();
+      localStorage.setItem('edl-app-data', JSON.stringify(payload));
+    }
+
+    function collectFormData() {
+      return {
+        reference: document.getElementById('reference').value,
+        dateEdl: document.getElementById('dateEdl').value,
+        typeEdl: document.getElementById('typeEdl').value,
+        adresse: document.getElementById('adresse').value,
+        observations: document.getElementById('observations').value,
+        proprietaire: document.getElementById('proprietaire').value,
+        locataire: document.getElementById('locataire').value,
+        agent: document.getElementById('agent').value,
+        releveEau: document.getElementById('releveEau').value,
+        releveElectricite: document.getElementById('releveElectricite').value,
+        releveGaz: document.getElementById('releveGaz').value,
+        nombreCles: document.getElementById('nombreCles').value,
+        dispositifs: document.getElementById('dispositifs').value,
+        rooms: state.rooms,
+        currentTab: state.currentTab,
+        signatures: {
+          landlord: landlordPad && !landlordPad.isEmpty() ? landlordPad.toDataURL() : '',
+          tenant: tenantPad && !tenantPad.isEmpty() ? tenantPad.toDataURL() : ''
+        }
+      };
+    }
+
+    function loadLocal() {
+      const raw = localStorage.getItem('edl-app-data');
+      if (!raw) {
+        addRoom('Entrée');
+        addRoom('Séjour');
+        addRoom('Cuisine');
+        return;
+      }
+      const data = JSON.parse(raw);
+      hydrateFormData(data);
+    }
+
+    function hydrateFormData(data) {
+      document.getElementById('reference').value = data.reference || '';
+      document.getElementById('dateEdl').value = data.dateEdl || '';
+      document.getElementById('typeEdl').value = data.typeEdl || 'Comparatif entrée / sortie';
+      document.getElementById('adresse').value = data.adresse || '';
+      document.getElementById('observations').value = data.observations || '';
+      document.getElementById('proprietaire').value = data.proprietaire || '';
+      document.getElementById('locataire').value = data.locataire || '';
+      document.getElementById('agent').value = data.agent || '';
+      document.getElementById('releveEau').value = data.releveEau || '';
+      document.getElementById('releveElectricite').value = data.releveElectricite || '';
+      document.getElementById('releveGaz').value = data.releveGaz || '';
+      document.getElementById('nombreCles').value = data.nombreCles || '';
+      document.getElementById('dispositifs').value = data.dispositifs || '';
+      state.rooms = Array.isArray(data.rooms) ? data.rooms : [];
+      state.currentTab = data.currentTab || 'entry';
+      renderRooms();
+      setTimeout(() => {
+        if (data.signatures?.landlord) landlordPad.fromDataURL(data.signatures.landlord);
+        if (data.signatures?.tenant) tenantPad.fromDataURL(data.signatures.tenant);
+      }, 100);
+    }
+
+    function exportJson() {
+      const payload = collectFormData();
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = (payload.reference || 'etat-des-lieux') + '.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importJson(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          hydrateFormData(data);
+          saveLocal();
+        } catch (e) {
+          alert('Fichier JSON invalide');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function clearSignature(side) {
+      if (side === 'landlord') landlordPad.clear();
+      if (side === 'tenant') tenantPad.clear();
+      saveLocal();
+    }
+
+    function resetApp() {
+      if (!confirm('Tout effacer ?')) return;
+      localStorage.removeItem('edl-app-data');
+      location.reload();
+    }
+
+    async function generatePdf() {
+      const payload = collectFormData();
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const left = 12;
+      let y = 12;
+
+      function addPageNumber() {
+        const pageCount = doc.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+          doc.setPage(i);
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(9);
+          doc.text(`Page ${i} / ${pageCount}`, pageWidth - 28, pageHeight - 8);
+        }
+      }
+
+      function line(txt, size = 10, bold = false) {
+        doc.setFont('helvetica', bold ? 'bold' : 'normal');
+        doc.setFontSize(size);
+        const lines = doc.splitTextToSize(String(txt || ''), 185);
+        if (y + lines.length * 5 > 275) {
+          doc.addPage();
+          y = 12;
+        }
+        doc.text(lines, left, y);
+        y += lines.length * 5 + 1;
+      }
+
+      function block(title, content) {
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        if (y > 265) {
+          doc.addPage();
+          y = 12;
+        }
+        doc.text(title, left, y);
+        y += 5;
+        doc.setFont('helvetica', 'normal');
+        const lines = doc.splitTextToSize(String(content || ''), 183);
+        const height = Math.max(8, lines.length * 5 + 4);
+        if (y + height > 275) {
+          doc.addPage();
+          y = 12;
+        }
+        doc.rect(left, y - 4, 185, height);
+        doc.text(lines, left + 2, y);
+        y += height + 4;
+      }
+
+      function twoCols(title, leftTxt, rightTxt) {
+        if (y > 250) {
+          doc.addPage();
+          y = 12;
+        }
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        doc.text(title, left, y);
+        y += 5;
+        doc.setFont('helvetica', 'normal');
+        const l = doc.splitTextToSize(leftTxt || '', 86);
+        const r = doc.splitTextToSize(rightTxt || '', 86);
+        const h = Math.max(l.length, r.length) * 5 + 4;
+        if (y + h > 275) {
+          doc.addPage();
+          y = 12;
+        }
+        doc.rect(left, y - 4, 88, h);
+        doc.rect(109, y - 4, 88, h);
+        doc.text(l, left + 2, y);
+        doc.text(r, 111, y);
+        y += h + 4;
+      }
+
+      line('ÉTAT DES LIEUX', 15, true);
+      line('Référence : ' + (payload.reference || ''), 10, true);
+      line('Date : ' + (payload.dateEdl || '') + ' - Type : ' + (payload.typeEdl || ''));
+      line('Adresse : ' + (payload.adresse || ''));
+      line('Propriétaire : ' + (payload.proprietaire || ''));
+      line('Locataire : ' + (payload.locataire || ''));
+      line('Agent / Représentant : ' + (payload.agent || ''));
+      line('Observations générales : ' + (payload.observations || ''));
+      y += 2;
+
+      block('Relevés et informations',
+        'Relevé eau : ' + (payload.releveEau || '') + '\n' +
+        'Relevé électricité : ' + (payload.releveElectricite || '') + '\n' +
+        'Relevé gaz : ' + (payload.releveGaz || '') + '\n' +
+        'Nombre de clés : ' + (payload.nombreCles || '') + '\n' +
+        'Moyens / dispositifs en place : ' + (payload.dispositifs || '')
+      );
+
+      payload.rooms.forEach((room) => {
+        doc.addPage();
+        y = 12;
+        line('Pièce : ' + room.name, 13, true);
+        room.elements.forEach((element) => {
+          twoCols(
+            'Élément : ' + element.name,
+            'ENTRÉE\nÉtat : ' + element.entry.status + '\nCommentaire : ' + (element.entry.comment || ''),
+            'SORTIE\nÉtat : ' + element.exit.status + '\nCommentaire : ' + (element.exit.comment || '')
+          );
+        });
+      });
+
+      doc.addPage();
+      y = 12;
+      line('Signatures', 13, true);
+      line('Mention légale : Lu et approuvé.', 10, true);
+
+      if (payload.signatures.landlord) {
+        line('Bailleur / représentant', 10, true);
+        doc.addImage(payload.signatures.landlord, 'PNG', 12, y, 80, 30);
+        y += 34;
+        line('Lu et approuvé');
+      }
+
+      if (payload.signatures.tenant) {
+        y += 4;
+        line('Locataire', 10, true);
+        doc.addImage(payload.signatures.tenant, 'PNG', 12, y, 80, 30);
+        y += 34;
+        line('Lu et approuvé');
+      }
+
+      addPageNumber();
+      doc.save((payload.reference || 'etat-des-lieux') + '.pdf');
+    }
+
+    function setupSignaturePad() {
+      const landlordCanvas = document.getElementById('signatureLandlord');
+      const tenantCanvas = document.getElementById('signatureTenant');
+
+      function resizeCanvas(canvas) {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * ratio;
+        canvas.height = rect.height * ratio;
+        const ctx = canvas.getContext('2d');
+        ctx.scale(ratio, ratio);
+      }
+
+      resizeCanvas(landlordCanvas);
+      resizeCanvas(tenantCanvas);
+
+      landlordPad = new SignaturePad(landlordCanvas);
+      tenantPad = new SignaturePad(tenantCanvas);
+
+      landlordCanvas.addEventListener('mouseup', saveLocal);
+      tenantCanvas.addEventListener('mouseup', saveLocal);
+      landlordCanvas.addEventListener('touchend', saveLocal);
+      tenantCanvas.addEventListener('touchend', saveLocal);
+
+      window.addEventListener('resize', () => {
+        const landlordData = !landlordPad.isEmpty() ? landlordPad.toDataURL() : null;
+        const tenantData = !tenantPad.isEmpty() ? tenantPad.toDataURL() : null;
+        resizeCanvas(landlordCanvas);
+        resizeCanvas(tenantCanvas);
+        landlordPad = new SignaturePad(landlordCanvas);
+        tenantPad = new SignaturePad(tenantCanvas);
+        if (landlordData) landlordPad.fromDataURL(landlordData);
+        if (tenantData) tenantPad.fromDataURL(tenantData);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setupSignaturePad();
+      document.getElementById('dateEdl').valueAsDate = new Date();
+      document.getElementById('typeEdl').value = 'Comparatif entrée / sortie';
+      loadLocal();
+    });
+  </script>
+</body>
+</html>
