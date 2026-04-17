@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>État des lieux</title>
+
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+
   <style>
     :root {
       --bg: #fff8fc;
@@ -18,7 +20,9 @@
       --rose: #ea5aa9;
       --rose-light: #fdebf5;
       --danger: #b42318;
+      --danger-bg: #ffe9ec;
       --tab-bg: #f8ebf7;
+      --ok: #5d2fc2;
     }
 
     * { box-sizing: border-box; }
@@ -34,7 +38,7 @@
     header {
       position: sticky;
       top: 0;
-      z-index: 20;
+      z-index: 50;
       padding: 12px;
       background: linear-gradient(135deg, var(--violet-dark), var(--rose));
       color: white;
@@ -53,10 +57,39 @@
       gap: 6px;
     }
 
-    .container {
-      max-width: 980px;
+    .app-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 12px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 12px;
+    }
+
+    .sidebar {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 4px 14px rgba(138, 74, 243, 0.04);
+      height: fit-content;
+      position: sticky;
+      top: 92px;
+    }
+
+    .sidebar h3 {
+      margin: 0 0 8px;
+      font-size: 11pt;
+      color: var(--violet-dark);
+    }
+
+    .main-content {
+      min-width: 0;
+    }
+
+    .container {
+      max-width: 980px;
+      padding: 0;
     }
 
     .card {
@@ -77,8 +110,20 @@
     .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
+    @media (max-width: 980px) {
+      .app-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
     @media (max-width: 900px) {
-      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
     }
 
     label {
@@ -110,6 +155,11 @@
       resize: vertical;
     }
 
+    input[type="file"] {
+      width: 100%;
+      padding: 6px 0;
+    }
+
     button {
       border: 0;
       border-radius: 10px;
@@ -129,7 +179,7 @@
     }
 
     button.danger {
-      background: #ffe9ec;
+      background: var(--danger-bg);
       color: #a61b2b;
       border: 1px solid #f4cbd2;
       box-shadow: none;
@@ -195,6 +245,11 @@
       margin-top: 8px;
     }
 
+    .photo-item {
+      position: relative;
+      display: inline-block;
+    }
+
     .photo-preview img {
       width: 68px;
       height: 68px;
@@ -241,13 +296,60 @@
     .mini-top-space {
       margin-top: 8px;
     }
+
+    .folder-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .folder-item {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px;
+      background: #fffafc;
+    }
+
+    .folder-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .folder-meta {
+      font-size: 9pt;
+      color: var(--muted);
+      margin-bottom: 6px;
+      white-space: normal;
+      word-break: break-word;
+    }
+
+    .folder-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .sidebar-top-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .empty-state {
+      color: var(--muted);
+      font-size: 9pt;
+      padding: 8px 0;
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>État des lieux</h1>
     <div class="toolbar">
-      <button onclick="saveLocal()">Enregistrer</button>
+      <button onclick="saveLocal()">Enregistrer localement</button>
+      <button class="secondary" onclick="saveCurrentDocument()">Sauver ce dossier</button>
       <button class="secondary" onclick="exportJson()">Exporter JSON</button>
       <label class="secondary" style="display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;cursor:pointer;">
         Importer JSON
@@ -257,132 +359,149 @@
       <button class="danger" onclick="resetApp()">Réinitialiser</button>
     </div>
   </header>
-<div class="app-layout">
 
-  <aside class="sidebar">
-    <h3>États des lieux</h3>
-
-    <button class="secondary" onclick="newDocument()">Nouveau</button>
-    <button class="secondary" onclick="saveCurrentDocument()">Enregistrer</button>
-
-    <div id="savedFolders" style="margin-top:10px;"></div>
-  </aside>
-
-  <main class="main-content">
-    <div class="container">
-    <div class="card">
-      <h2 class="section-title">Informations générales</h2>
-
-      <div class="grid grid-3">
-        <div>
-          <label>Référence dossier</label>
-          <input type="text" id="reference" placeholder="Ex. EDL-2026-001">
-        </div>
-        <div>
-          <label>Date</label>
-          <input type="date" id="dateEdl">
-        </div>
-        <div>
-          <label>Type</label>
-          <select id="typeEdl">
-            <option>Entrée</option>
-            <option>Sortie</option>
-            <option selected>Comparatif entrée / sortie</option>
-          </select>
-        </div>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <h3>États des lieux enregistrés</h3>
+      <div class="sidebar-top-actions">
+        <button class="secondary" onclick="newDocument()">Nouveau</button>
+        <button class="secondary" onclick="saveCurrentDocument()">Enregistrer</button>
       </div>
+      <div id="savedFolders" class="folder-list"></div>
+    </aside>
 
-      <div class="grid grid-2 mini-top-space">
-        <div>
-          <label>Bien / Adresse</label>
-          <textarea id="adresse" placeholder="Adresse complète du bien"></textarea>
-        </div>
-        <div>
-          <label>Observations générales</label>
-          <textarea id="observations" placeholder="Commentaires généraux"></textarea>
-        </div>
-      </div>
+    <main class="main-content">
+      <div class="container">
+        <div class="card">
+          <h2 class="section-title">Informations générales</h2>
 
-      <div class="grid grid-3 mini-top-space">
-        <div>
-          <label>Propriétaire</label>
-          <input type="text" id="proprietaire">
-        </div>
-        <div>
-          <label>Locataire</label>
-          <input type="text" id="locataire">
-        </div>
-        <div>
-          <label>Agent / Représentant</label>
-          <input type="text" id="agent">
-        </div>
-      </div>
+          <div class="grid grid-3">
+            <div>
+              <label>Référence dossier</label>
+              <input type="text" id="reference" placeholder="Ex. EDL-2026-001">
+            </div>
+            <div>
+              <label>Date de l’état des lieux</label>
+              <input type="date" id="dateEdl">
+            </div>
+            <div>
+              <label>Type</label>
+              <select id="typeEdl">
+                <option>Entrée</option>
+                <option>Sortie</option>
+                <option selected>Comparatif entrée / sortie</option>
+              </select>
+            </div>
+          </div>
 
-      <div class="grid grid-4 mini-top-space">
-        <div>
-          <label>Relevé eau</label>
-          <input type="text" id="releveEau">
-        </div>
-        <div>
-          <label>Relevé électricité</label>
-          <input type="text" id="releveElectricite">
-        </div>
-        <div>
-          <label>Relevé gaz</label>
-          <input type="text" id="releveGaz">
-        </div>
-        <div>
-          <label>Nombre de clés</label>
-          <input type="text" id="nombreCles">
-        </div>
-      </div>
+          <div class="grid grid-2 mini-top-space">
+            <div>
+              <label>Bien / Adresse</label>
+              <textarea id="adresse" placeholder="Adresse complète du bien"></textarea>
+            </div>
+            <div>
+              <label>Observations générales</label>
+              <textarea id="observations" placeholder="Commentaires généraux"></textarea>
+            </div>
+          </div>
 
-      <div class="mini-top-space">
-        <label>Moyens / dispositifs en place</label>
-        <textarea id="dispositifs" placeholder="Ex. Alarme incendie, détecteur de fumée, fibre internet, interphone, badge, télécommande portail, visiophone..."></textarea>
-      </div>
-    </div>
+          <div class="grid grid-3 mini-top-space">
+            <div>
+              <label>Bailleur / Propriétaire</label>
+              <input type="text" id="proprietaire">
+            </div>
+            <div>
+              <label>Locataire</label>
+              <input type="text" id="locataire">
+            </div>
+            <div>
+              <label>Mandataire / Agent / Représentant</label>
+              <input type="text" id="agent">
+            </div>
+          </div>
 
-    <div class="card">
-      <div class="room-header">
-        <div>
-          <h2 class="section-title" style="margin-bottom:2px;">Pièces</h2>
-          <div class="small">Affichage mobile avec onglets Entrée / Sortie.</div>
-        </div>
-        <div>
-          <button onclick="addRoom()">Ajouter une pièce</button>
-        </div>
-      </div>
+          <div class="grid grid-3 mini-top-space">
+            <div>
+              <label>Date du bail</label>
+              <input type="date" id="dateBail">
+            </div>
+            <div>
+              <label>Date d’effet du bail</label>
+              <input type="date" id="dateEffetBail">
+            </div>
+            <div>
+              <label>Usage du bien</label>
+              <input type="text" id="usageBien" placeholder="Ex. habitation">
+            </div>
+          </div>
 
-      <div id="rooms"></div>
-    </div>
+          <div class="grid grid-4 mini-top-space">
+            <div>
+              <label>Relevé eau</label>
+              <input type="text" id="releveEau">
+            </div>
+            <div>
+              <label>Relevé électricité</label>
+              <input type="text" id="releveElectricite">
+            </div>
+            <div>
+              <label>Relevé gaz</label>
+              <input type="text" id="releveGaz">
+            </div>
+            <div>
+              <label>Nombre de clés</label>
+              <input type="text" id="nombreCles">
+            </div>
+          </div>
 
-    <div class="card">
-      <h2 class="section-title">Signatures</h2>
-      <div class="grid grid-2">
-        <div class="signature-box">
-          <label>Signature bailleur / représentant</label>
-          <canvas id="signatureLandlord"></canvas>
-          <div class="mention">Lu et approuvé</div>
           <div class="mini-top-space">
-            <button class="secondary" onclick="clearSignature('landlord')">Effacer</button>
+            <label>Moyens / dispositifs en place</label>
+            <textarea id="dispositifs" placeholder="Ex. Alarme incendie, détecteur de fumée, fibre internet, interphone, badge, télécommande portail, visiophone..."></textarea>
           </div>
         </div>
 
-        <div class="signature-box">
-          <label>Signature locataire</label>
-          <canvas id="signatureTenant"></canvas>
-          <div class="mention">Lu et approuvé</div>
-          <div class="mini-top-space">
-            <button class="secondary" onclick="clearSignature('tenant')">Effacer</button>
+        <div class="card">
+          <div class="room-header">
+            <div>
+              <h2 class="section-title" style="margin-bottom:2px;">Pièces</h2>
+              <div class="small">Affichage mobile avec onglets Entrée / Sortie.</div>
+            </div>
+            <div>
+              <button onclick="addRoom()">Ajouter une pièce</button>
+            </div>
+          </div>
+
+          <div id="rooms"></div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Signatures</h2>
+          <div class="grid grid-2">
+            <div class="signature-box">
+              <label>Signature bailleur / représentant</label>
+              <canvas id="signatureLandlord"></canvas>
+              <div class="mention">Lu et approuvé</div>
+              <div class="mini-top-space">
+                <button class="secondary" onclick="clearSignature('landlord')">Effacer</button>
+              </div>
+            </div>
+
+            <div class="signature-box">
+              <label>Signature locataire</label>
+              <canvas id="signatureTenant"></canvas>
+              <div class="mention">Lu et approuvé</div>
+              <div class="mini-top-space">
+                <button class="secondary" onclick="clearSignature('tenant')">Effacer</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="footer-note">
-      Sauvegarde locale + export JSON + PDF
-    </div>
+        <div class="footer-note">
+          Sauvegarde locale + répertoire des états des lieux + export JSON + PDF
+        </div>
+      </div>
+    </main>
   </div>
 
   <script>
@@ -394,12 +513,12 @@
     };
 
     const statusOptions = ['Neuf', 'Très bon', 'Bon', 'Usage', 'Moyen', 'Mauvais', 'À remplacer', 'Absent'];
-
     const defaultRoomNames = ['Entrée', 'Séjour', 'Cuisine', 'Chambre', 'Salle de bain', 'WC'];
 
     const state = {
       rooms: [],
-      currentTab: 'entry'
+      currentTab: 'entry',
+      currentDocumentId: null
     };
 
     let landlordPad = null;
@@ -542,7 +661,7 @@
           <input type="file" accept="image/*" capture="environment" multiple onchange="handlePhotos(event, '${roomId}', ${elementIndex}, '${side}')">
           <div class="photo-preview">
             ${photos.map((src, i) => `
-              <div style="position:relative;">
+              <div class="photo-item">
                 <img src="${src}" alt="photo">
                 <button
                   type="button"
@@ -607,6 +726,7 @@
     async function handlePhotos(event, roomId, elementIndex, side) {
       const files = Array.from(event.target.files || []);
       if (!files.length) return;
+
       const room = state.rooms.find(r => r.id === roomId);
       if (!room || !room.elements[elementIndex]) return;
 
@@ -629,6 +749,7 @@
 
     function collectFormData() {
       return {
+        id: state.currentDocumentId,
         reference: document.getElementById('reference').value,
         dateEdl: document.getElementById('dateEdl').value,
         typeEdl: document.getElementById('typeEdl').value,
@@ -637,6 +758,9 @@
         proprietaire: document.getElementById('proprietaire').value,
         locataire: document.getElementById('locataire').value,
         agent: document.getElementById('agent').value,
+        dateBail: document.getElementById('dateBail').value,
+        dateEffetBail: document.getElementById('dateEffetBail').value,
+        usageBien: document.getElementById('usageBien').value,
         releveEau: document.getElementById('releveEau').value,
         releveElectricite: document.getElementById('releveElectricite').value,
         releveGaz: document.getElementById('releveGaz').value,
@@ -644,6 +768,7 @@
         dispositifs: document.getElementById('dispositifs').value,
         rooms: state.rooms,
         currentTab: state.currentTab,
+        currentDocumentId: state.currentDocumentId,
         signatures: {
           landlord: landlordPad && !landlordPad.isEmpty() ? landlordPad.toDataURL() : '',
           tenant: tenantPad && !tenantPad.isEmpty() ? tenantPad.toDataURL() : ''
@@ -664,6 +789,9 @@
       document.getElementById('proprietaire').value = data.proprietaire || '';
       document.getElementById('locataire').value = data.locataire || '';
       document.getElementById('agent').value = data.agent || '';
+      document.getElementById('dateBail').value = data.dateBail || '';
+      document.getElementById('dateEffetBail').value = data.dateEffetBail || '';
+      document.getElementById('usageBien').value = data.usageBien || '';
       document.getElementById('releveEau').value = data.releveEau || '';
       document.getElementById('releveElectricite').value = data.releveElectricite || '';
       document.getElementById('releveGaz').value = data.releveGaz || '';
@@ -671,9 +799,13 @@
       document.getElementById('dispositifs').value = data.dispositifs || '';
       state.rooms = Array.isArray(data.rooms) ? data.rooms : [];
       state.currentTab = data.currentTab || 'entry';
+      state.currentDocumentId = data.currentDocumentId || data.id || null;
+
       renderRooms();
 
       setTimeout(() => {
+        if (landlordPad) landlordPad.clear();
+        if (tenantPad) tenantPad.clear();
         if (data.signatures && data.signatures.landlord && landlordPad) landlordPad.fromDataURL(data.signatures.landlord);
         if (data.signatures && data.signatures.tenant && tenantPad) tenantPad.fromDataURL(data.signatures.tenant);
       }, 60);
@@ -718,8 +850,11 @@
       reader.onload = () => {
         try {
           const data = JSON.parse(reader.result);
+          if (!data.id) data.id = crypto.randomUUID();
+          state.currentDocumentId = data.id;
           hydrateFormData(data);
           saveLocal();
+          saveCurrentDocument(true);
         } catch (e) {
           alert('Fichier JSON invalide');
         }
@@ -736,6 +871,7 @@
     function resetApp() {
       if (!confirm('Tout effacer ?')) return;
       localStorage.removeItem('edl-app-data');
+      state.currentDocumentId = null;
       location.reload();
     }
 
@@ -778,250 +914,198 @@
         if (tenantData) tenantPad.fromDataURL(tenantData);
       });
     }
-async function generatePdf() {
-  const payload = collectFormData();
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
 
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const pageHeight = doc.internal.pageSize.getHeight();
-  const left = 12;
-  let y = 12;
-
-  function addPageNumbers() {
-    const count = doc.getNumberOfPages();
-    for (let i = 1; i <= count; i++) {
-      doc.setPage(i);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(9);
-      doc.text(`Page ${i} / ${count}`, pageWidth - 28, pageHeight - 8);
-    }
-  }
-
-  function ensureSpace(heightNeeded = 10) {
-    if (y + heightNeeded > 275) {
-      doc.addPage();
-      y = 12;
-    }
-  }
-
-  function line(text, size = 10, bold = false) {
-    doc.setFont('helvetica', bold ? 'bold' : 'normal');
-    doc.setFontSize(size);
-    const lines = doc.splitTextToSize(String(text || ''), 185);
-    ensureSpace(lines.length * 5 + 2);
-    doc.text(lines, left, y);
-    y += lines.length * 5 + 1;
-  }
-
-  function block(title, content) {
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
-    ensureSpace(12);
-    doc.text(title, left, y);
-    y += 5;
-
-    doc.setFont('helvetica', 'normal');
-    const lines = doc.splitTextToSize(String(content || ''), 183);
-    const height = Math.max(8, lines.length * 5 + 4);
-    ensureSpace(height + 2);
-
-    doc.rect(left, y - 4, 185, height);
-    doc.text(lines, left + 2, y);
-    y += height + 4;
-  }
-
-  function twoCols(title, leftTxt, rightTxt) {
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
-    ensureSpace(12);
-    doc.text(title, left, y);
-    y += 5;
-
-    doc.setFont('helvetica', 'normal');
-    const leftLines = doc.splitTextToSize(leftTxt || '', 86);
-    const rightLines = doc.splitTextToSize(rightTxt || '', 86);
-    const h = Math.max(leftLines.length, rightLines.length) * 5 + 4;
-
-    ensureSpace(h + 2);
-
-    doc.rect(left, y - 4, 88, h);
-    doc.rect(109, y - 4, 88, h);
-    doc.text(leftLines, left + 2, y);
-    doc.text(rightLines, 111, y);
-    y += h + 4;
-  }
-
-  function getImageFormat(dataUrl) {
-    if (!dataUrl || typeof dataUrl !== 'string') return 'JPEG';
-    if (dataUrl.startsWith('data:image/png')) return 'PNG';
-    if (dataUrl.startsWith('data:image/webp')) return 'WEBP';
-    return 'JPEG';
-  }
-
-  async function addPhotoGallery(title, photos) {
-    if (!photos || !photos.length) return;
-
-    line(title, 10, true);
-
-    const imgWidth = 40;
-    const imgHeight = 30;
-    const gap = 6;
-    const perRow = 4;
-    let col = 0;
-
-    for (let i = 0; i < photos.length; i++) {
-      const photo = photos[i];
-      const format = getImageFormat(photo);
-
-      if (col === 0) {
-        ensureSpace(imgHeight + 8);
-      }
-
-      const x = left + col * (imgWidth + gap);
-
+    function getSavedDocuments() {
       try {
-        doc.addImage(photo, format, x, y, imgWidth, imgHeight);
+        return JSON.parse(localStorage.getItem('edl-documents') || '[]');
       } catch (e) {
-        doc.setFont('helvetica', 'italic');
-        doc.setFontSize(9);
-        doc.text('[Photo non insérée]', x, y + 10);
-      }
-
-      col++;
-
-      if (col >= perRow) {
-        col = 0;
-        y += imgHeight + 6;
+        return [];
       }
     }
 
-    if (col !== 0) {
-      y += imgHeight + 6;
+    function setSavedDocuments(docs) {
+      localStorage.setItem('edl-documents', JSON.stringify(docs));
     }
-  }
 
-  line('ÉTAT DES LIEUX', 15, true);
-  line('Référence : ' + (payload.reference || ''), 10, true);
-  line('Date : ' + (payload.dateEdl || '') + ' - Type : ' + (payload.typeEdl || ''));
-  line('Adresse : ' + (payload.adresse || ''));
-  line('Propriétaire : ' + (payload.proprietaire || ''));
-  line('Locataire : ' + (payload.locataire || ''));
-  line('Agent / Représentant : ' + (payload.agent || ''));
-  line('Observations générales : ' + (payload.observations || ''));
+    function renderSavedFolders() {
+      const container = document.getElementById('savedFolders');
+      if (!container) return;
 
-  block(
-    'Relevés et informations',
-    'Relevé eau : ' + (payload.releveEau || '') + '\n' +
-    'Relevé électricité : ' + (payload.releveElectricite || '') + '\n' +
-    'Relevé gaz : ' + (payload.releveGaz || '') + '\n' +
-    'Nombre de clés : ' + (payload.nombreCles || '') + '\n' +
-    'Moyens / dispositifs en place : ' + (payload.dispositifs || '')
-  );
+      const docs = getSavedDocuments();
 
-  doc.addPage();
-  y = 12;
+      if (!docs.length) {
+        container.innerHTML = '<div class="empty-state">Aucun état des lieux enregistré.</div>';
+        return;
+      }
 
-  line('Mentions légales', 13, true);
-  block(
-    'Cadre de l’état des lieux',
-    "Le présent état des lieux est établi contradictoirement entre les parties. Il décrit l’état du logement, de ses équipements, des relevés, des clés remises, des dispositifs en place, des observations et des photographies jointes au document à la date de signature."
-  );
-  block(
-    'Validation',
-    "Les signataires reconnaissent avoir pris connaissance du présent état des lieux, l’avoir vérifié, lu et approuvé."
-  );
-
-  for (const room of payload.rooms) {
-    doc.addPage();
-    y = 12;
-
-    line('Pièce : ' + (room.name || ''), 13, true);
-
-    const elements = Array.isArray(room.elements) ? room.elements : [];
-
-    for (const element of elements) {
-      twoCols(
-        'Élément : ' + (element.name || ''),
-        'ENTRÉE\nÉtat : ' + (element.entry?.status || '') + '\nCommentaire : ' + (element.entry?.comment || ''),
-        'SORTIE\nÉtat : ' + (element.exit?.status || '') + '\nCommentaire : ' + (element.exit?.comment || '')
-      );
-
-      await addPhotoGallery(
-        'Photos entrée - ' + (element.name || ''),
-        element.entry?.photos || []
-      );
-
-      await addPhotoGallery(
-        'Photos sortie - ' + (element.name || ''),
-        element.exit?.photos || []
-      );
+      container.innerHTML = docs.map(doc => `
+        <div class="folder-item">
+          <div class="folder-title">${escapeHtml(doc.reference || 'Sans référence')}</div>
+          <div class="folder-meta">
+            ${escapeHtml(doc.dateEdl || '')}<br>
+            ${escapeHtml(doc.adresse || '')}
+          </div>
+          <div class="folder-actions">
+            <button class="secondary" onclick="openSavedDocument('${doc.id}')">Ouvrir</button>
+            <button class="secondary" onclick="duplicateSavedDocument('${doc.id}')">Dupliquer</button>
+            <button class="danger" onclick="deleteSavedDocument('${doc.id}')">Supprimer</button>
+          </div>
+        </div>
+      `).join('');
     }
-  }
 
-  doc.addPage();
-  y = 12;
+    function saveCurrentDocument(silent = false) {
+      const payload = collectFormData();
+      const docs = getSavedDocuments();
 
-  line('Signatures', 13, true);
-  line('Mention légale : Lu et approuvé.', 10, true);
+      if (!state.currentDocumentId) {
+        state.currentDocumentId = crypto.randomUUID();
+      }
 
-  if (payload.signatures.landlord) {
-    line('Bailleur / représentant', 10, true);
-    try {
-      doc.addImage(payload.signatures.landlord, 'PNG', 12, y, 80, 30);
-    } catch (e) {}
-    y += 34;
-    line('Lu et approuvé');
-  }
+      payload.id = state.currentDocumentId;
+      payload.currentDocumentId = state.currentDocumentId;
+      payload.savedAt = new Date().toISOString();
 
-  if (payload.signatures.tenant) {
-    y += 4;
-    line('Locataire', 10, true);
-    try {
-      doc.addImage(payload.signatures.tenant, 'PNG', 12, y, 80, 30);
-    } catch (e) {}
-    y += 34;
-    line('Lu et approuvé');
-  }
+      const existingIndex = docs.findIndex(d => d.id === payload.id);
 
-  addPageNumbers();
-  doc.save((payload.reference || 'etat-des-lieux') + '.pdf');
-}
-   
+      if (existingIndex >= 0) {
+        docs[existingIndex] = payload;
+      } else {
+        docs.unshift(payload);
+      }
+
+      setSavedDocuments(docs);
+      saveLocal();
+      renderSavedFolders();
+
+      if (!silent) {
+        alert('État des lieux enregistré dans le répertoire');
+      }
+    }
+
+    function openSavedDocument(id) {
+      const docs = getSavedDocuments();
+      const doc = docs.find(d => d.id === id);
+      if (!doc) return;
+
+      state.currentDocumentId = doc.id;
+      hydrateFormData(doc);
+      saveLocal();
+    }
+
+    function deleteSavedDocument(id) {
+      if (!confirm('Supprimer cet état des lieux ?')) return;
+
+      const docs = getSavedDocuments().filter(d => d.id !== id);
+      setSavedDocuments(docs);
+
+      if (state.currentDocumentId === id) {
+        state.currentDocumentId = null;
+      }
+
+      renderSavedFolders();
+    }
+
+    function duplicateSavedDocument(id) {
+      const docs = getSavedDocuments();
+      const doc = docs.find(d => d.id === id);
+      if (!doc) return;
+
+      const clone = JSON.parse(JSON.stringify(doc));
+      clone.id = crypto.randomUUID();
+      clone.currentDocumentId = clone.id;
+      clone.reference = (clone.reference || 'Copie') + ' - copie';
+      clone.savedAt = new Date().toISOString();
+
+      docs.unshift(clone);
+      setSavedDocuments(docs);
+      renderSavedFolders();
+    }
+
+    function newDocument() {
+      if (!confirm('Créer un nouvel état des lieux ?')) return;
+
+      state.currentDocumentId = null;
+      localStorage.removeItem('edl-app-data');
+
+      document.getElementById('reference').value = '';
+      document.getElementById('dateEdl').valueAsDate = new Date();
+      document.getElementById('typeEdl').value = 'Comparatif entrée / sortie';
+      document.getElementById('adresse').value = '';
+      document.getElementById('observations').value = '';
+      document.getElementById('proprietaire').value = '';
+      document.getElementById('locataire').value = '';
+      document.getElementById('agent').value = '';
+      document.getElementById('dateBail').value = '';
+      document.getElementById('dateEffetBail').value = '';
+      document.getElementById('usageBien').value = '';
+      document.getElementById('releveEau').value = '';
+      document.getElementById('releveElectricite').value = '';
+      document.getElementById('releveGaz').value = '';
+      document.getElementById('nombreCles').value = '';
+      document.getElementById('dispositifs').value = '';
+
+      if (landlordPad) landlordPad.clear();
+      if (tenantPad) tenantPad.clear();
+
+      setDefaultRooms();
+      renderSavedFolders();
+    }
+
+    function getImageFormat(dataUrl) {
+      if (!dataUrl || typeof dataUrl !== 'string') return 'JPEG';
+      if (dataUrl.startsWith('data:image/png')) return 'PNG';
+      if (dataUrl.startsWith('data:image/webp')) return 'WEBP';
+      return 'JPEG';
+    }
+
+    async function generatePdf() {
+      const payload = collectFormData();
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const left = 12;
+      let y = 12;
+
+      function addPageNumbers() {
+        const count = doc.getNumberOfPages();
+        for (let i = 1; i <= count; i++) {
+          doc.setPage(i);
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(9);
+          doc.text(`Page ${i} / ${count}`, pageWidth - 28, pageHeight - 8);
+        }
+      }
+
+      function ensureSpace(heightNeeded = 10) {
+        if (y + heightNeeded > 275) {
+          doc.addPage();
+          y = 12;
+        }
+      }
 
       function line(text, size = 10, bold = false) {
         doc.setFont('helvetica', bold ? 'bold' : 'normal');
         doc.setFontSize(size);
         const lines = doc.splitTextToSize(String(text || ''), 185);
-
-        if (y + lines.length * 5 > 275) {
-          doc.addPage();
-          y = 12;
-        }
-
+        ensureSpace(lines.length * 5 + 2);
         doc.text(lines, left, y);
         y += lines.length * 5 + 1;
       }
 
       function block(title, content) {
-        if (y > 260) {
-          doc.addPage();
-          y = 12;
-        }
-
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(10);
+        ensureSpace(12);
         doc.text(title, left, y);
         y += 5;
 
         doc.setFont('helvetica', 'normal');
         const lines = doc.splitTextToSize(String(content || ''), 183);
         const height = Math.max(8, lines.length * 5 + 4);
-
-        if (y + height > 275) {
-          doc.addPage();
-          y = 12;
-        }
+        ensureSpace(height + 2);
 
         doc.rect(left, y - 4, 185, height);
         doc.text(lines, left + 2, y);
@@ -1029,13 +1113,9 @@ async function generatePdf() {
       }
 
       function twoCols(title, leftTxt, rightTxt) {
-        if (y > 248) {
-          doc.addPage();
-          y = 12;
-        }
-
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(10);
+        ensureSpace(12);
         doc.text(title, left, y);
         y += 5;
 
@@ -1044,10 +1124,7 @@ async function generatePdf() {
         const rightLines = doc.splitTextToSize(rightTxt || '', 86);
         const h = Math.max(leftLines.length, rightLines.length) * 5 + 4;
 
-        if (y + h > 275) {
-          doc.addPage();
-          y = 12;
-        }
+        ensureSpace(h + 2);
 
         doc.rect(left, y - 4, 88, h);
         doc.rect(109, y - 4, 88, h);
@@ -1056,13 +1133,58 @@ async function generatePdf() {
         y += h + 4;
       }
 
+      async function addPhotoGallery(title, photos) {
+        if (!photos || !photos.length) return;
+
+        line(title, 10, true);
+
+        const imgWidth = 40;
+        const imgHeight = 30;
+        const gap = 6;
+        const perRow = 4;
+        let col = 0;
+
+        for (let i = 0; i < photos.length; i++) {
+          const photo = photos[i];
+          const format = getImageFormat(photo);
+
+          if (col === 0) {
+            ensureSpace(imgHeight + 8);
+          }
+
+          const x = left + col * (imgWidth + gap);
+
+          try {
+            doc.addImage(photo, format, x, y, imgWidth, imgHeight);
+          } catch (e) {
+            doc.setFont('helvetica', 'italic');
+            doc.setFontSize(9);
+            doc.text('[Photo non insérée]', x, y + 10);
+          }
+
+          col++;
+
+          if (col >= perRow) {
+            col = 0;
+            y += imgHeight + 6;
+          }
+        }
+
+        if (col !== 0) {
+          y += imgHeight + 6;
+        }
+      }
+
       line('ÉTAT DES LIEUX', 15, true);
       line('Référence : ' + (payload.reference || ''), 10, true);
-      line('Date : ' + (payload.dateEdl || '') + ' - Type : ' + (payload.typeEdl || ''));
-      line('Adresse : ' + (payload.adresse || ''));
-      line('Propriétaire : ' + (payload.proprietaire || ''));
+      line('Date de l’état des lieux : ' + (payload.dateEdl || '') + ' - Type : ' + (payload.typeEdl || ''));
+      line('Adresse du bien : ' + (payload.adresse || ''));
+      line('Bailleur / Propriétaire : ' + (payload.proprietaire || ''));
       line('Locataire : ' + (payload.locataire || ''));
-      line('Agent / Représentant : ' + (payload.agent || ''));
+      line('Mandataire / Agent / Représentant : ' + (payload.agent || ''));
+      line('Date du bail : ' + (payload.dateBail || ''));
+      line('Date d’effet du bail : ' + (payload.dateEffetBail || ''));
+      line('Usage du bien : ' + (payload.usageBien || ''));
       line('Observations générales : ' + (payload.observations || ''));
 
       block(
@@ -1070,33 +1192,75 @@ async function generatePdf() {
         'Relevé eau : ' + (payload.releveEau || '') + '\n' +
         'Relevé électricité : ' + (payload.releveElectricite || '') + '\n' +
         'Relevé gaz : ' + (payload.releveGaz || '') + '\n' +
-        'Nombre de clés : ' + (payload.nombreCles || '') + '\n' +
+        'Nombre de clés remises / restituées : ' + (payload.nombreCles || '') + '\n' +
         'Moyens / dispositifs en place : ' + (payload.dispositifs || '')
       );
 
-      for (const room of payload.rooms) {
+      doc.addPage();
+      y = 12;
+
+      line('Mentions légales', 13, true);
+
+      block(
+        'Établissement de l’état des lieux',
+        "Le présent état des lieux est établi contradictoirement entre les parties, en application du bail d’habitation mentionné au présent document. Il décrit l’état du logement, de ses pièces, de ses équipements et des éléments qui le composent à la date de réalisation de l’état des lieux."
+      );
+
+      block(
+        'Lien avec le bail',
+        "Le présent document est annexé au contrat de bail ou établi dans le cadre de son exécution. Il pourra être utilisé pour comparer l’état du logement lors de l’entrée et de la sortie des lieux, conformément aux obligations réciproques du bailleur et du locataire."
+      );
+
+      block(
+        'Constats et pièces jointes',
+        "Les relevés de compteurs, le nombre de clés, les dispositifs présents dans le logement, les observations, ainsi que les photographies annexées au présent état des lieux font partie intégrante des constats établis entre les parties."
+      );
+
+      block(
+        'Validation',
+        "Les parties reconnaissent avoir pris connaissance du présent état des lieux, l’avoir vérifié, lu et approuvé. Elles déclarent que les mentions portées reflètent les constatations effectuées sur place à la date de signature."
+      );
+
+      const rooms = Array.isArray(payload.rooms) ? payload.rooms : [];
+
+      for (const room of rooms) {
         doc.addPage();
         y = 12;
+
         line('Pièce : ' + (room.name || ''), 13, true);
 
         const elements = Array.isArray(room.elements) ? room.elements : [];
+
         for (const element of elements) {
           twoCols(
             'Élément : ' + (element.name || ''),
             'ENTRÉE\nÉtat : ' + (element.entry?.status || '') + '\nCommentaire : ' + (element.entry?.comment || ''),
             'SORTIE\nÉtat : ' + (element.exit?.status || '') + '\nCommentaire : ' + (element.exit?.comment || '')
           );
+
+          await addPhotoGallery(
+            'Photos entrée - ' + (element.name || ''),
+            element.entry?.photos || []
+          );
+
+          await addPhotoGallery(
+            'Photos sortie - ' + (element.name || ''),
+            element.exit?.photos || []
+          );
         }
       }
 
       doc.addPage();
       y = 12;
+
       line('Signatures', 13, true);
       line('Mention légale : Lu et approuvé.', 10, true);
 
       if (payload.signatures.landlord) {
         line('Bailleur / représentant', 10, true);
-        doc.addImage(payload.signatures.landlord, 'PNG', 12, y, 80, 30);
+        try {
+          doc.addImage(payload.signatures.landlord, 'PNG', 12, y, 80, 30);
+        } catch (e) {}
         y += 34;
         line('Lu et approuvé');
       }
@@ -1104,7 +1268,9 @@ async function generatePdf() {
       if (payload.signatures.tenant) {
         y += 4;
         line('Locataire', 10, true);
-        doc.addImage(payload.signatures.tenant, 'PNG', 12, y, 80, 30);
+        try {
+          doc.addImage(payload.signatures.tenant, 'PNG', 12, y, 80, 30);
+        } catch (e) {}
         y += 34;
         line('Lu et approuvé');
       }
@@ -1117,10 +1283,8 @@ async function generatePdf() {
       setupSignaturePad();
       document.getElementById('dateEdl').valueAsDate = new Date();
       loadLocal();
+      renderSavedFolders();
     });
   </script>
 </body>
 </html>
-        </div>
-  </main>
-</div>
